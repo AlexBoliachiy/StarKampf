@@ -1,0 +1,6 @@
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.exe.config
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.exe
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.pdb
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb

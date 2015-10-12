@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarKampf", "Game2\StarKampf.csproj", "{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarKampf_server", "StarKampf_server\StarKampf_server.csproj", "{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Debug|x86.ActiveCfg = Debug|x86
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Debug|x86.Build.0 = Debug|x86
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Release|Any CPU.ActiveCfg = Release|x86
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Release|x86.ActiveCfg = Release|x86
+		{8C80F31B-2779-4BE6-8C35-7B5B2F8B36EC}.Release|x86.Build.0 = Release|x86
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Debug|x86.Build.0 = Debug|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Release|x86.ActiveCfg = Release|Any CPU
+		{C5699E93-BB7E-4BBB-BD98-3D3EC99D7BCB}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
