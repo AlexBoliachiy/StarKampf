@@ -11,11 +11,15 @@ namespace Game2
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            Content.RootDirectory = "Content";  
+           
+            
+            
         }
 
         /// <summary>
@@ -27,7 +31,8 @@ namespace Game2
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            player = new Player(GraphicsDevice);
+            player.Initialize();
             base.Initialize();
         }
 
@@ -39,6 +44,15 @@ namespace Game2
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            string[] PathToTextures;
+            PathToTextures = System.IO.File.ReadAllText("Textures.txt").Split('\n');
+            Texture2D [] allTextures = new Texture2D[PathToTextures.Length];
+            for (int i = 0; i < PathToTextures.Length; i++)
+            {
+                allTextures[i] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i]);
+            }
+            player.IniTextures(allTextures);
 
             // TODO: use this.Content to load your game content here
         }
@@ -59,11 +73,12 @@ namespace Game2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            player.Update();
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
 
@@ -76,8 +91,8 @@ namespace Game2
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            player.Draw();
             base.Draw(gameTime);
         }
     }
-}
+} 
