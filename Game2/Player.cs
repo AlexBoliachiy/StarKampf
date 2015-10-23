@@ -22,7 +22,7 @@ namespace Game2
             Tank = 0
         }
 
-        //Для подключения к серверу
+        //For server connection
         private NetPeerConfiguration config;
         private NetClient client;
         private NetIncomingMessage inMsg;
