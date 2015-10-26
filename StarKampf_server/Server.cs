@@ -10,8 +10,8 @@ namespace StarKampf_server
 {
     enum Commands
     {
-        iniUnit = 0
-
+        iniUnit = 0,
+        msgYourUnit = 1
     }
 
     enum Units
@@ -42,6 +42,10 @@ namespace StarKampf_server
             UnitsList[3] = new List<BaseUnit>(0);
             int[] arr;
             arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+            //Initializing  a few units for debugind needs
+            UnitsList[0].Add(new Fighter(0, 0, 0, 0, "unicorn", 100, 10, 100, 1));
+            UnitsList[0].Add(new Fighter(0, 100, 100, 0, "unicorn", 100, 10, 100, 1));
 
             outMsg = server.CreateMessage();
 

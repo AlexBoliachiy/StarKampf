@@ -13,7 +13,8 @@ namespace Game2
     {
         enum Commands
         {
-            iniUnit = 0
+            iniUnit = 0,
+            msgYourUnit = 1
 
         }
 
@@ -35,7 +36,8 @@ namespace Game2
         SpriteBatch sprite;
         int side;
 
-        bool DeleteThis; // Delete this 
+        public Interface Inter;
+
 
         public Player(GraphicsDevice GraphicsDevice)
         {
@@ -53,6 +55,8 @@ namespace Game2
             outMsg = client.CreateMessage();
             SendMsgIniUnit(0, 100, 100);
 
+
+            Inter = new Interface(GraphicsDevice);
         }
 
 
@@ -80,18 +84,16 @@ namespace Game2
                 }
 
                 client.Recycle(inMsg);
-                if (client.ConnectionStatus == NetConnectionStatus.Connected && DeleteThis == false)
-                {
-                    DeleteThis = true;
-                    SendMsgIniUnit(0, 0, 0);
-                }
+                
             }
+            Inter.Update();
         }
         public void Draw()  
         {
             // Who will engage with Interface class?
             // You shoud draw it there;
             DrawUnits();
+            Inter.Draw();
         }
         
         private int DrawUnits()
@@ -101,21 +103,25 @@ namespace Game2
             {
                 return 0;
             }
-            foreach (string A in arrOfUnitProp.Split(new char[] { '\n'} )) // Split array of string on string like  "xx xx xx \n"
+            sprite.Begin(SpriteSortMode.BackToFront,
+                       BlendState.AlphaBlend,
+                       null,
+                       null,
+                       null,
+                       null,
+                       Inter.camera.GetTransformation(GraphicsDevice));
+            foreach (string A in arrOfUnitProp.Split(new char[] { '\n'} )) // Split array of string to string like  "xx xx xx \n"
             {
                
                 int[] MapSituatinon = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(n => int.Parse(n))
                 .ToArray();
-                sprite.Begin();
-                for (int i=0; i < MapSituatinon.Length; i++)
+                for (int i = 0; i < MapSituatinon.Length; i++)
                 {
                     sprite.Draw(allTextures[MapSituatinon[0]], new Vector2(MapSituatinon[1], MapSituatinon[2]), Color.White);
                 }
-                sprite.End();
-                
-
             }
+            sprite.End();
             return 0;
         }
 
@@ -141,10 +147,6 @@ namespace Game2
         }
 
     }
-    class Interface
-    {
-        // Вложенный класс в Player, будет отвечать за отрисовку и корректный вывод информации на экран игрока
-
-    }
+    
 
 }

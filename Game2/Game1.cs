@@ -12,13 +12,11 @@ namespace Game2
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";  
-           
-            
+            Content.RootDirectory = "Content";
+         //   graphics.IsFullScreen = true;
             
         }
 
@@ -34,6 +32,7 @@ namespace Game2
             player = new Player(GraphicsDevice);
             player.Initialize();
             base.Initialize();
+            this.IsMouseVisible = true;
         }
 
         /// <summary>

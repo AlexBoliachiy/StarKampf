@@ -9,8 +9,8 @@ namespace StarKampf_server
     class MovingUnit : BaseUnit
     {
         protected int Speed;
-        private double Dx, Dy; // Where is going to, moving destination coords//
-        private bool isMoving;
+        protected double Dx, Dy; // Where is going to, moving destination coords//
+        protected bool isMoving;
         public bool IsMoving { get { return isMoving; } }
         protected int angle;
 
