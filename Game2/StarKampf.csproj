@@ -42,7 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera2D.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game1.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Interface.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Player.cs" />

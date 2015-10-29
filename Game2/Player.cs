@@ -14,21 +14,24 @@ namespace Game2
         enum Commands
         {
             iniUnit = 0,
-            msgYourUnit = 1
-
+            msgYourUnit = 1 //wtf is it?
         }
 
         enum Units
         {
-            Tank = 0
+            unicorn = 0
         }
 
         //Для подключения к серверу
         private NetPeerConfiguration config;
         private NetClient client;
         private NetIncomingMessage inMsg;
-        private NetOutgoingMessage outMsg; 
+        private NetOutgoingMessage outMsg;
+        
+        
+        // 
         private string arrOfUnitProp;
+        private string SelectedUnits;
         GraphicsDevice GraphicsDevice;
 
         //using for drawing object on the map;
@@ -86,7 +89,7 @@ namespace Game2
                 client.Recycle(inMsg);
                 
             }
-            Inter.Update();
+            Inter.Update(arrOfUnitProp);
         }
         public void Draw()  
         {
@@ -129,6 +132,7 @@ namespace Game2
         {
             allTextures = texture;
         }
+
         private void SendMsgIniUnit(int ID, int x, int y)
         {
 
@@ -138,11 +142,12 @@ namespace Game2
             client.SendMessage(outMsg, NetDeliveryMethod.ReliableOrdered); 
 
         }
+
         private void EstablishConnection()
         {
             if (client.ConnectionStatus == NetConnectionStatus.Disconnected)
             {
-               
+              //What should client doing?????????////???
             }
         }
 

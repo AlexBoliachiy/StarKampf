@@ -17,7 +17,7 @@ namespace StarKampf_server
         public bool isDead;
         public int side;
         protected int ID;
-
+        protected int IN;
         protected void SetTarget(BaseUnit unit)
         { 
              

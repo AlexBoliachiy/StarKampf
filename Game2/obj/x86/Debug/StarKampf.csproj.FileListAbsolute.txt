@@ -25,3 +25,4 @@ C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\Game2\bi
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\Game2\obj\x86\Debug\Game2.exe
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\Game2\obj\x86\Debug\Game2.pdb
+C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\Game2\bin\Windows\Debug\Game1.cs

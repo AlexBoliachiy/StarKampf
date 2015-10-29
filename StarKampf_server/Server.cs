@@ -16,7 +16,7 @@ namespace StarKampf_server
 
     enum Units
     {
-        Tank = 0
+        unicorn = 0
     }
 
     class Server
@@ -29,6 +29,9 @@ namespace StarKampf_server
         private int[] ArrOfCms;// for handle command
         private string StrCommand;
         private List<BaseUnit>[] UnitsList; // array of list units. 0 list it units first player, etc.
+
+
+        private static int IN; //value that determined units id, identifical number
 
         public Server()
         {
@@ -44,8 +47,8 @@ namespace StarKampf_server
             arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
             //Initializing  a few units for debugind needs
-            UnitsList[0].Add(new Fighter(0, 0, 0, 0, "unicorn", 100, 10, 100, 1));
-            UnitsList[0].Add(new Fighter(0, 100, 100, 0, "unicorn", 100, 10, 100, 1));
+            UnitsList[0].Add(new Fighter(0, 0, 0, 0, "unicorn", 100, 10, 100, 1, IN++));
+            UnitsList[0].Add(new Fighter(0, 100, 100, 0, "unicorn", 100, 10, 100, 1, IN++));
 
             outMsg = server.CreateMessage();
 
@@ -85,18 +88,32 @@ namespace StarKampf_server
         {
             //Read from received string numeric commands 
             StrCommand = inMsg.ReadString();
-            ArrOfCms = StrCommand.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(n => int.Parse(n))
-                .ToArray();
-            switch ((Commands)ArrOfCms[0])
+            // What is doing there
+            /*
+            * Server Receives message as sequence of numbers separating of symbol '\n'
+            * Example: 0 0 0 0 
+            *          1 0 0 0 
+            * First symbol - command, next symbol depeond of it
+            * 1 line - 1 command
+            * In following code we separate command by one string one command
+            * then we put it in Int arrray and start analyze msg
+            * by switch
+            */
+            foreach (string A in StrCommand.Split('\n'))
             {
-                case Commands.iniUnit:
-                    IniUnit();
-                    break;
-                default:
-                    break;
+                ArrOfCms = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+               .Select(n => int.Parse(n))
+               .ToArray();
+                switch ((Commands)ArrOfCms[0])
+                {
+                    case Commands.iniUnit:
+                        IniUnit();
+                        break;
+                    default:
+                        break;
+                }
             }
-
+        
             return 0;
 
 
@@ -109,7 +126,7 @@ namespace StarKampf_server
             switch ((Units)ArrOfCms[1])
             {
 
-                case Units.Tank:
+                case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file
                     // as soon as possible
@@ -117,7 +134,7 @@ namespace StarKampf_server
                     arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
                     UnitsList[ArrOfCms[4]].Add(new Fighter(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "unicorn", arr[0]
-                                                            , arr[1], arr[2], arr[3]));
+                                                            , arr[1], arr[2], arr[3], IN++));
                     Console.Write("ini tank");
                     break;
                 default:
@@ -131,8 +148,8 @@ namespace StarKampf_server
         {
             //In this code block we pack all information about units to the MapSituation
             // When this messege will receive to client , he will read line and draw unit;
-            // Example message  0 0 0 0
-            // It means tank , xCoord = 0, yCoord = 0, angle = 0
+            // Example message  0 0 0 0 0 0
+            // It means tank , xCoord = 0, yCoord = 0, angle = 0, side = 0, indentifical number = 0
             string MapSituation = System.String.Empty;
             for (int i=0; i < UnitsList.Length; i++)
             {

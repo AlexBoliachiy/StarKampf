@@ -8,7 +8,7 @@ namespace StarKampf_server
 {
     class Fighter : MovingUnit
     {
-        public Fighter(int ID, int x, int y, int side, string name, int MaxHealth, int speed, int damage, int countdown)
+        public Fighter(int ID, int x, int y, int side, string name, int MaxHealth, int speed, int damage, int countdown,int IN)
         {
             this.name = name;
             this.ID = ID;
@@ -20,7 +20,7 @@ namespace StarKampf_server
             this.side = side;
             this.MaxHealth = MaxHealth;
             health = MaxHealth;
-
+            this.IN = IN;
             isDead = false;
         }
         private int damage;
@@ -29,7 +29,8 @@ namespace StarKampf_server
         {
             get
             {
-                return ID.ToString() + " " + x.ToString() + " " + y.ToString() + " " + angle.ToString() + " " + side.ToString() +  "\n";
+                return ID.ToString() + " " + x.ToString() + " " + y.ToString() + " "
+                       + angle.ToString() + " " + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
     }
