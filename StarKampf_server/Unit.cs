@@ -35,12 +35,12 @@ namespace StarKampf_server
 
         }
 
-        public virtual void Act()
+        public virtual void Act(double Interval)
         {
 
         }
-        public virtual string GetUnitProperties { get; }
-    }
+        public virtual string GetUnitProperties { get { return string.Empty; } set { ;} }
+    }//private constructor
 
 
 }
