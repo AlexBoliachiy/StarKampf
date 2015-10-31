@@ -110,8 +110,8 @@ namespace Game2
         private string SelectUnits(string arrOfUnitProp)
         {
             string SelectedUnits = string.Empty;
-            int[] arr;
-            Rectangle selectingRect = new Rectangle((int)firstLeftClickCoord.X, 
+            float[] arr;
+            Rectangle selectingRect = new Rectangle((int)firstLeftClickCoord.X,
                                                     (int)firstLeftClickCoord.Y,
                                                     (int)(currentMousePos.X - firstLeftClickCoord.X),
                                                     (int)(currentMousePos.Y - firstLeftClickCoord.Y));
@@ -119,15 +119,16 @@ namespace Game2
             {
 
                 arr = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(n => int.Parse(n))
+                .Select(n => float.Parse(n))// angle must be float
                 .ToArray();
 
-                if (selectingRect.Contains(arr[1], arr[2]))
-                {
-                    //Add unit to collection of selected units;
-                    SelectedUnits += arr.Last().ToString() + " ";
+                if(arr.Length != 0){ // добавив цю перевірку, бо після декількох проходів массив arr пустий і має довжину 0
+                    if (selectingRect.Contains(arr[1], arr[2]))
+                    {
+                        //Add unit to collection of selected units;
+                        SelectedUnits += arr.Last().ToString() + " ";
+                    }
                 }
-
             }
 
             return SelectedUnits;

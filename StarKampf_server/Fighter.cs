@@ -33,5 +33,9 @@ namespace StarKampf_server
                        + angle.ToString() + " " + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
+        public override void Act(double Interval)
+        {
+            base.Act(Interval);
+        }
     }
 }

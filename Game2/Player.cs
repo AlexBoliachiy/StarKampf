@@ -27,7 +27,7 @@ namespace Game2
         private NetClient client;
         private NetIncomingMessage inMsg;
         private NetOutgoingMessage outMsg;
-        
+
         
         // 
         private string arrOfUnitProp;
@@ -37,6 +37,8 @@ namespace Game2
         //using for drawing object on the map;
         Texture2D[] allTextures;
         SpriteBatch sprite;
+        Rectangle spriteRectangle;// Для корректной отрисовки поворота юнита
+        Vector2 spriteOrigin;// Центр спрайта
         int side;
 
         public Interface Inter;
@@ -116,12 +118,15 @@ namespace Game2
             foreach (string A in arrOfUnitProp.Split(new char[] { '\n'} )) // Split array of string to string like  "xx xx xx \n"
             {
                
-                int[] MapSituatinon = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(n => int.Parse(n))
+                float[] MapSituatinon = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(n => float.Parse(n)) // angle must be inf float, not int
                 .ToArray();
                 for (int i = 0; i < MapSituatinon.Length; i++)
                 {
-                    sprite.Draw(allTextures[MapSituatinon[0]], new Vector2(MapSituatinon[1], MapSituatinon[2]), Color.White);
+                    spriteRectangle = new Rectangle((int)MapSituatinon[1], (int)MapSituatinon[2], allTextures[(int)MapSituatinon[0]].Width, allTextures[(int)MapSituatinon[0]].Height);
+                    spriteOrigin = new Vector2(allTextures[(int)MapSituatinon[0]].Width/2, allTextures[(int)MapSituatinon[0]].Height/2);
+
+                    sprite.Draw(allTextures[(int)MapSituatinon[0]], new Vector2(MapSituatinon[1], MapSituatinon[2]), null, Color.White, MapSituatinon[3], spriteOrigin, 1.0f, SpriteEffects.None, 0f);
                 }
             }
             sprite.End();

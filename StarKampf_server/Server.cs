@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Data.Sql;
 using System.IO;
 using Lidgren.Network;
+using System.Diagnostics;
+
 namespace StarKampf_server
 {
     enum Commands
@@ -25,11 +27,12 @@ namespace StarKampf_server
         NetServer server;
         NetOutgoingMessage outMsg; // Outgoing msg
         NetIncomingMessage inMsg; //Incoming msg
-
+        const float timeDivider = 30;
         private int[] ArrOfCms;// for handle command
         private string StrCommand;
         private List<BaseUnit>[] UnitsList; // array of list units. 0 list it units first player, etc.
 
+        Stopwatch sw;//Timer
 
         private static int IN; //value that determined units id, identifical number
 
@@ -45,17 +48,20 @@ namespace StarKampf_server
             UnitsList[3] = new List<BaseUnit>(0);
             int[] arr;
             arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-
+            //ini timer
+            sw = new Stopwatch();
             //Initializing  a few units for debugind needs
-            UnitsList[0].Add(new Fighter(0, 0, 0, 0, "unicorn", 100, 10, 100, 1, IN++));
-            UnitsList[0].Add(new Fighter(0, 100, 100, 0, "unicorn", 100, 10, 100, 1, IN++));
+            UnitsList[0].Add(new Fighter(0, 30, 30, 0, "unicorn", 100, 5, 100, 1, IN++));
+            UnitsList[0].Add(new Fighter(0, 130, 130, 0, "unicorn", 100, 5, 100, 1, IN++));
+
+            ((Fighter)UnitsList[0][1]).SetMoveDest(50,300);
 
             outMsg = server.CreateMessage();
 
         }
         public void Act()
         {
-            
+            sw.Stop();
             while ((inMsg = server.ReadMessage()) != null)
             {
                 switch (inMsg.MessageType)
@@ -78,7 +84,9 @@ namespace StarKampf_server
                 }
                 server.Recycle(inMsg);
             }
-
+            UpdateUnits(sw.ElapsedMilliseconds/timeDivider);
+            sw.Reset(); // reset the timer (change current time to 0)
+            sw.Start();
             SendMapSituation();
             Console.Clear();
             Console.WriteLine("Count of connection {0}", server.ConnectionsCount);
@@ -176,6 +184,16 @@ namespace StarKampf_server
 
             }
             return 0;
+        }
+        private void UpdateUnits(double Interval)
+        {
+            foreach (List<BaseUnit> A in UnitsList)
+            {
+                foreach (BaseUnit Unit in A)
+                {
+                    Unit.Act(Interval);
+                }
+            }
         }
 
     }
