@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StarKampf_server
+namespace Game2
 {
     /*
 
@@ -13,15 +13,25 @@ namespace StarKampf_server
         protected int health;
         protected int MaxHealth;
         protected double x, y;
+        public double X { get { return x; } }
+        public double Y { get { return y; } }
         protected string name;
         public bool isDead;
-        public int side; // На чьей стороне воюет
-        protected int ID; // этим полем определяется тип юнита, (танк, центр)
-        protected int IN; // Идентификационый номер отдельного юнита
+        public int side;
+        protected int ID;
+        public int id { get { return ID; } }
+        protected int IN;
         public int GN { get { return IN; } } // global nubmber
-        public string Name { get { return name; } }
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
+        public float Angle { get { return angle; } }
+        protected void SetTarget(BaseUnit unit)
+        { 
+             
+        } 
+
+        public string Name { get { return name; } }
+
         public void Draw()
         {
 
@@ -42,6 +52,7 @@ namespace StarKampf_server
         {
 
         }
+
     }//private constructor
 
 

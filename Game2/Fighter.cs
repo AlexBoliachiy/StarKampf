@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace StarKampf_server
+//Осторожно, некоторые строки в сервере и в клиенте отличаются
+namespace Game2
 {
     class Fighter : MovingUnit
     {
-        public Fighter(int ID, int x, int y, int side, string name, int MaxHealth, int speed, int damage, int countdown,int IN)
+        public Fighter(int ID, int x, int y, int side, int IN, string name, int MaxHealth, int speed, int damage, int countdown)
         {
             this.name = name;
             this.ID = ID;
             this.Speed = speed;
-            this.x = x;
+            this.x = x; 
             this.y = y;
             this.damage = damage;
             this.Countdown = countdown;
@@ -30,7 +30,7 @@ namespace StarKampf_server
             get
             {
                 return ID.ToString() + " " + x.ToString() + " " + y.ToString() + " "
-                        + side.ToString() + " " + IN.ToString() + " " + "\n";
+                       + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
         public override void Act(double Interval)
