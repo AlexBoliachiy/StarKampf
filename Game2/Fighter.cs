@@ -19,6 +19,7 @@ namespace Game2
             this.Countdown = countdown;
             this.side = side;
             this.MaxHealth = MaxHealth;
+            this.angle = 0;
             health = MaxHealth;
             this.IN = IN;
             isDead = false;

@@ -15,10 +15,11 @@ namespace Game2
         public bool IsMoving { get { return isMoving; } }
         protected bool isRotating;
         public bool IsRotating { get { return isRotating; } }
-        protected float omega = 0.01f; // Скорость поворота надо сделать зависимой от скорости.
         protected MovingUnit() // Prevent ini any objects this class
         {
         }
+
+        protected float Omega { get { return this.Speed / 200.0f; } }
 
         public override void SetMoveDest(int x, int y)
         {
@@ -27,7 +28,9 @@ namespace Game2
 
             this.Nx = Dx / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)));
             this.Ny = Dy / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)));
-            rotateAngle = (float)Math.Atan2(Ny, Nx) - angle;
+            rotateAngle = (float)Math.Atan2(Dy, Dx) - angle;
+
+            if (Math.Abs(rotateAngle) > Math.PI) rotateAngle = Math.Sign(-rotateAngle)*((float)Math.PI * 2 - Math.Abs(rotateAngle));
 
             isMoving = true;
             if (rotateAngle != 0.0f) isRotating = true;// Если смотрим в направлении движения - не разворачиваемся
@@ -36,21 +39,20 @@ namespace Game2
         protected void rotate(double Interval)
         {
             if (isRotating == false) return;
-            if (rotateAngle - angle > (float)Interval * omega)
+
+            if (Math.Abs(rotateAngle) > (float)Interval * Omega)
             {
-                if (rotateAngle - angle > (float)Interval * omega)
-                {
-                    angle += (float)Interval * omega;
-                }
-                else
-                {
-                    angle -= (float)Interval * omega;
-                }
+                angle += Math.Sign(rotateAngle) * (float)Interval * Omega;
+                rotateAngle -= Math.Sign(rotateAngle) * (float)Interval * Omega;
+                if (Math.Abs(angle) >= Math.PI) angle = Math.Sign(-angle) * ((float)Math.PI * 2 - angle);
+                return;
             }
             else
             {
-                angle = rotateAngle;
+                angle += rotateAngle;
+                rotateAngle = 0;
                 isRotating = false;
+                return;
             }
         }
 
@@ -64,36 +66,34 @@ namespace Game2
             / на стороне сервера, который будет использоваться при перемещение. Карта будет содержать 
             / как минимум три объета: А) пустой спейс, Б) Препятствие (камень, дерево, етс.) В) вода
             */
+
             if (isMoving == false) return; // Не собрались двигаться - прочь из метода
+
             if (IsRotating == true) // Разворот в сторону движения перед самим движением
             {
                 rotate(Interval);
                 return;
             }
-            if (Dx > 0 || Dy > 0)
+
+            double Distance = Math.Pow(Dx, 2) + Math.Pow(Dy, 2); // Дистанция к точке назначеня
+
+            if (Distance >= this.Length(Interval)) // Если дистанция больше атрибута двигаемся на полную длинну
             {
-                double Distance = Math.Pow(Dx, 2) + Math.Pow(Dy, 2); // Дистанция к точке назначеня
-                if (Distance >= this.Length(Interval)) // Если дистанция больше атрибута двигаемся на полную длинну
-                {
-                    this.x += Nx * Speed * Interval;
-                    this.y += Ny * Speed * Interval;
-                    Dx -= Nx * Speed * Interval;
-                    Dy -= Ny * Speed * Interval;
-                    return;
-                }
-                else // если нет - просто прыгаем в точку назанчения
-                {
-                    this.x += Dx;
-                    this.y += Dy;
-                    Dx = 0;
-                    Dy = 0;
-                    isMoving = false;
-                    return;
-                }
+                this.x += Nx * Speed * Interval;
+                this.y += Ny * Speed * Interval;
+                Dx -= Nx * Speed * Interval;
+                Dy -= Ny * Speed * Interval;
+                return;
             }
-            else //вдруг чуть перескочим
+
+            else // если нет - просто прыгаем в точку назанчения
             {
+                this.x += Dx;
+                this.y += Dy;
+                Dx = 0;
+                Dy = 0;
                 isMoving = false;
+                return;
             }
         }
 

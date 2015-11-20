@@ -13,7 +13,6 @@ C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\StarKampf_se
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.pdb
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\Lidgren.Network.dll
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\Lidgren.Network.pdb
-C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
 E:\sc\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.exe.config
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
@@ -22,3 +21,4 @@ E:\sc\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.pdb
 E:\sc\StarKampf\StarKampf_server\bin\Debug\Lidgren.Network.dll
 E:\sc\StarKampf\StarKampf_server\bin\Debug\Lidgren.Network.pdb
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
