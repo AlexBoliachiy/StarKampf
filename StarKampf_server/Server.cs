@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 using System.Data.Sql;
 using System.IO;
 using Lidgren.Network;
+using System.Diagnostics;
+
 namespace StarKampf_server
 {
     enum Commands
     {
-        iniUnit = 0
-
+        iniUnit = 0,
+        moveUnit = 1
     }
 
     enum Units
     {
-        Tank = 0
+        unicorn = 0
     }
 
     class Server
@@ -25,30 +27,38 @@ namespace StarKampf_server
         NetServer server;
         NetOutgoingMessage outMsg; // Outgoing msg
         NetIncomingMessage inMsg; //Incoming msg
-
+        const double timeDivider = 30;
         private int[] ArrOfCms;// for handle command
-        private string StrCommand;
-        private List<BaseUnit>[] UnitsList; // array of list units. 0 list it units first player, etc.
+        private List<string> StrCommand;
+        private string OutStrCmd; // string with commands, that sending to client and there execute
+        private List<BaseUnit> UnitsList; // array of all units on the map
+
+        Stopwatch sw;//Timer
+        
+
+        private static int IN; //value that determined units id, identifical number
 
         public Server()
         {
             config = new NetPeerConfiguration("StarKampf") { Port = 12345 };
             server = new NetServer(config);
             server.Start();
-            UnitsList = new List<BaseUnit>[4];
-            UnitsList[0] = new List<BaseUnit>(0);
-            UnitsList[1] = new List<BaseUnit>(0);
-            UnitsList[2] = new List<BaseUnit>(0);
-            UnitsList[3] = new List<BaseUnit>(0);
-            int[] arr;
-            arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-
             outMsg = server.CreateMessage();
 
+            StrCommand = new List<string>();
+            UnitsList = new List<BaseUnit>();
+            int[] arr;
+            arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+            //ini timer
+            sw = new Stopwatch();
         }
         public void Act()
-        {
-            
+        { 
+            double time = sw.ElapsedMilliseconds / timeDivider;
+            sw.Reset(); // reset the timer (change current time to 0)
+            sw.Start();
+            OutStrCmd = String.Empty;
+
             while ((inMsg = server.ReadMessage()) != null)
             {
                 switch (inMsg.MessageType)
@@ -68,93 +78,148 @@ namespace StarKampf_server
                           }
                         
                         break;
+
                 }
                 server.Recycle(inMsg);
             }
-
-            SendMapSituation();
-            Console.Clear();
-            Console.WriteLine("Count of connection {0}", server.ConnectionsCount);
+            UpdateUnits(time);
+            
         }
 
         private int AnalyzeMsg()
         {
             //Read from received string numeric commands 
-            StrCommand = inMsg.ReadString();
-            ArrOfCms = StrCommand.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(n => int.Parse(n))
-                .ToArray();
-            switch ((Commands)ArrOfCms[0])
+            string tmp = inMsg.ReadString();
+            StrCommand.Add(tmp);
+            LogMsg("Receive msg: " + tmp);
+            // What is doing there
+            /*
+            * Server Receives message as sequence of numbers separating by symbol '\n'
+            * Example: 0 0 0 0 
+            *          1 0 0 0 
+            * First symbol - command, next symbol - params to command
+            * 1 line - 1 command
+            * In following code we separate command by symbol '\n'. One string one command
+            * then we put it in Int array and start analyze msg
+            * by switching
+            */
+            //Обрабатываем первый элемент.
+            while (StrCommand.Count > 0)
             {
-                case Commands.iniUnit:
-                    IniUnit();
-                    break;
-                default:
-                    break;
+                foreach (string A in StrCommand.First().Split('\n'))
+                {
+                    ArrOfCms = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                   .Select(n => int.Parse(n))
+                   .ToArray();
+                    if (ArrOfCms.Count() == 0)
+                        continue;
+                    switch ((Commands)ArrOfCms[0])
+                    {
+                        case Commands.iniUnit:
+                            IniUnit();
+                            break;
+
+                        case Commands.moveUnit:
+                            MoveUnit();
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                SendCommandsToClients();
+                StrCommand.Remove(StrCommand.First());// Удаляем обраотанный элемент
             }
 
             return 0;
+        }
 
+        private void MoveUnit()
+        {
+            BaseUnit movingUnit = FindInList(UnitsList, ArrOfCms[1]);
+            if (movingUnit != null)
+            { 
+                movingUnit.SetMoveDest(ArrOfCms[2], ArrOfCms[3]);
+                OutStrCmd += ArrOfCms[0] + " " + ArrOfCms[1] + " " + ArrOfCms[2] + " " +
+                             ArrOfCms[3] + " " + "\n";
+            }
+
+        }
+        private BaseUnit FindInList(List<BaseUnit> VecUnits, int IN)
+        {
+            for (int i = 0; i < VecUnits.Count; i++)
+            {
+                if (VecUnits[i].GN == IN)
+                    return VecUnits[i];
+            }
+            return null;
 
         }
         private int IniUnit()
         {
+            /*Сначала инициализируем юнит на сервере.
+            * Затем добавляем в строку комманд, которые исполняются на клиенте 
+            * что бы они тоже инициализировали у себя юнит
+            * Возможно даже не нужно инициализировать на сервере юнит, но пусть пока будет.
+            * Нет, нужно, и возможно , нужно даже хранить команды. Ведь если кто-то вдруг ненадолго ливнет, ему потом придется отсылать
+            * Все те команды, что он провтыкал. Короче этим буду уже не я заниматься.
+            */
             int[] arr;
-           
-           
             switch ((Units)ArrOfCms[1])
             {
 
-                case Units.Tank:
+                case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file
                     // as soon as possible
 
                     arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
-                    UnitsList[ArrOfCms[4]].Add(new Fighter(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "unicorn", arr[0]
-                                                            , arr[1], arr[2], arr[3]));
-                    Console.Write("ini tank");
+                    UnitsList.Add(new Fighter(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "unicorn", arr[0]
+                                                            , arr[1], arr[2], arr[3], IN++));
+                    OutStrCmd += "0 " + UnitsList.Last().GetUnitProperties;
+                   
+
+                    Console.WriteLine("Ini Unicorn ");
                     break;
                 default:
                     break;
-                
-                }
-            
-            return 0;
-        }
-        private int SendMapSituation()
-        {
-            //In this code block we pack all information about units to the MapSituation
-            // When this messege will receive to client , he will read line and draw unit;
-            // Example message  0 0 0 0
-            // It means tank , xCoord = 0, yCoord = 0, angle = 0
-            string MapSituation = System.String.Empty;
-            for (int i=0; i < UnitsList.Length; i++)
-            {
-                for (int j=0; j < UnitsList[i].Count; j++)
-                {
-                    MapSituation += UnitsList[i][j].GetUnitProperties;
-                }
+
             }
 
-            // 
+            return 0;
+        }
 
-            outMsg.Write(MapSituation);
-            for (int i=0; i < 4; i++) // No named const it's bad I know it, but I doesn't see another way.
+        private void UpdateUnits(double Interval)
+        {
+                foreach (BaseUnit Unit in UnitsList)
+                {
+                    Unit.Act(Interval);
+                }
+        }
+
+        private void SendCommandsToClients()
+        {
+            if (OutStrCmd == null || OutStrCmd == string.Empty)
+                return;
+            outMsg.Write(OutStrCmd);
+            LogMsg("Send msg: " + OutStrCmd);
+            for (int i = 0; i < 4; i++)
             {
                 try
                 {
                     if (server.Connections[i] != null)
                         server.SendMessage(outMsg, server.Connections[i], NetDeliveryMethod.ReliableOrdered);
                 }
-                catch 
+                catch
                 {
-                    //Becouse if list of connections < 2 and we try  contact to third connection it cause error
+                    //if list of connections < 2 and we try  contact to third connection this will be throw exception 
                 }
-
             }
-            return 0;
+        }
+        public void LogMsg(string message)
+        {
+            File.AppendAllText("serverlog.txt", message);
         }
 
     }
