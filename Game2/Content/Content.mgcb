@@ -13,3 +13,8 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Textures/unicorn.xnb
+/importer:
+/processor:
+/build:Textures/unicorn.xnb
+
