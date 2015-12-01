@@ -5,10 +5,17 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.IO;
 using System.Diagnostics;
+
+
+
+
 namespace Game2
 {
     class Player
@@ -25,7 +32,7 @@ namespace Game2
             unicorn = 0
         }
 
-        //Для подключения к серверу
+        //For server connection
         private NetPeerConfiguration config;
         private NetClient client;
         private NetIncomingMessage inMsg;
@@ -133,7 +140,6 @@ namespace Game2
             DrawUnits();
             Inter.Draw();
         }
-
         private int DrawUnits()
         {
 
