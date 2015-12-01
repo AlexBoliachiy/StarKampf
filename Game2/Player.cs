@@ -140,7 +140,6 @@ namespace Game2
             DrawUnits();
             Inter.Draw();
         }
-       
         private int DrawUnits()
         {
 

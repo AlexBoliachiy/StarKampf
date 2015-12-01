@@ -12,6 +12,7 @@ namespace Game2
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        Texture2D Test;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -52,7 +53,8 @@ namespace Game2
                 allTextures[i] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i]);
             }
             player.IniTextures(allTextures);
-
+            
+            Test = Content.Load <Texture2D>("unicorn");
             // TODO: use this.Content to load your game content here
         }
 
@@ -88,7 +90,9 @@ namespace Game2
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(Test, new Rectangle(0, 0, 500, 251), Color.White);
+            spriteBatch.End();
             // TODO: Add your drawing code here
             player.Draw();
             base.Draw(gameTime);
