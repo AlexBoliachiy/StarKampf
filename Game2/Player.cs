@@ -103,7 +103,7 @@ namespace Game2
                         break;
 
                 }
-                if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)
+                if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
                     SendMsgIniUnit(0, 300, 300);
                     DG = true;
@@ -129,14 +129,17 @@ namespace Game2
         public void Draw()
         {
             // Who will engage with Interface class?
-            // You shoud draw it there;
+
+            //Draw all there
+            Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
             DrawUnits();
             Inter.Draw();
+            //
+            sprite.End();
         }
 
         private int DrawUnits()
         {
-
             sprite.Begin(SpriteSortMode.BackToFront,
                        BlendState.AlphaBlend,
                        null,
@@ -144,9 +147,6 @@ namespace Game2
                        null,
                        null,
                        Inter.camera.GetTransformation(GraphicsDevice));
-
-
-
             for (int i = 0; i < VecUnits.Count; i++)
             {
                 int id = VecUnits[i].id;
@@ -157,10 +157,11 @@ namespace Game2
                 spriteOrigin = new Vector2(allTextures[id].Width / 2, allTextures[id].Height / 2);
 
                 sprite.Draw(allTextures[id], new Vector2((int)VecUnits[i].X, (int)VecUnits[i].Y),
-                    null, Color.White, VecUnits[i].Angle, spriteOrigin, 1.0f, SpriteEffects.None, 0f);
+                    null, Color.White, VecUnits[i].Angle, spriteOrigin, .15f, SpriteEffects.None, 0f);
             }
-
             sprite.End();
+
+            
             return 0;
         }
 
@@ -285,7 +286,7 @@ namespace Game2
         }
 
         private BaseUnit FindInList(List<BaseUnit> VecUnits, int IN)
-        {
+        { 
             for (int i = 0; i < VecUnits.Count; i++)
             {
                 if (VecUnits[i].GN == IN)
@@ -298,7 +299,7 @@ namespace Game2
 
         public void LogMsg(string message)
         {
-            File.AppendAllText("log.txt", message);
+           // File.AppendAllText("log.txt", message);
         }
     }
 

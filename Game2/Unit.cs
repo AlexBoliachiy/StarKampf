@@ -11,7 +11,8 @@ namespace Game2
     class BaseUnit
     {
         protected int health;
-        protected int MaxHealth;
+        public int MaxHealth { get { return _MaxHealth; } }
+        protected int _MaxHealth;
         protected double x, y;
         public double X { get { return x; } }
         public double Y { get { return y; } }
@@ -31,6 +32,7 @@ namespace Game2
         } 
 
         public string Name { get { return name; } }
+        public int Health { get { return health; } }
 
         public void Draw()
         {

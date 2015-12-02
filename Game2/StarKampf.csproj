@@ -41,6 +41,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Building.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="Game1.cs">

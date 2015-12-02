@@ -37,6 +37,7 @@ namespace StarKampf_server
         
 
         private static int IN; //value that determined units id, identifical number
+        // 1 0 0 0 0
 
         public Server()
         {
@@ -108,6 +109,8 @@ namespace StarKampf_server
             {
                 foreach (string A in StrCommand.First().Split('\n'))
                 {
+                    if (A == null || A == string.Empty)
+                        break;
                     ArrOfCms = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                    .Select(n => int.Parse(n))
                    .ToArray();
@@ -160,9 +163,6 @@ namespace StarKampf_server
             /*Сначала инициализируем юнит на сервере.
             * Затем добавляем в строку комманд, которые исполняются на клиенте 
             * что бы они тоже инициализировали у себя юнит
-            * Возможно даже не нужно инициализировать на сервере юнит, но пусть пока будет.
-            * Нет, нужно, и возможно , нужно даже хранить команды. Ведь если кто-то вдруг ненадолго ливнет, ему потом придется отсылать
-            * Все те команды, что он провтыкал. Короче этим буду уже не я заниматься.
             */
             int[] arr;
             switch ((Units)ArrOfCms[1])
@@ -219,7 +219,7 @@ namespace StarKampf_server
         }
         public void LogMsg(string message)
         {
-            File.AppendAllText("serverlog.txt", message);
+         //   File.AppendAllText("serverlog.txt", message);
         }
 
     }
