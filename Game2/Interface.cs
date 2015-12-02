@@ -33,6 +33,7 @@ namespace Game2
 
         private int side;
         private List<BaseUnit> selectedUnits;
+        private KeyboardState keyboardState; // playing with camera
 
         public Interface(GraphicsDevice graphics, int side)
         {
@@ -52,7 +53,27 @@ namespace Game2
         {
             mouseState = Mouse.GetState();
 
+            keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > -1920)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(-10, 0); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.W) && camera._pos.Y > -1080)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(0, -10); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.S) && camera._pos.Y < 1080)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(0, +10); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.D) && camera._pos.X < 1920)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(10, 0);  //camera movement
+            }                                       //camera movement
+
             // I thought thic code is extremely simple
+
 
             if (isClicded == false && mouseState.LeftButton == ButtonState.Pressed) // If clicked fisrt time
             {
@@ -121,7 +142,6 @@ namespace Game2
             DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2(currentMousePos.X, firstLeftClickCoord.Y));
             DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2( firstLeftClickCoord.X, currentMousePos.Y));
             sprite.End();
-
         }
 
         // Just drawing line 

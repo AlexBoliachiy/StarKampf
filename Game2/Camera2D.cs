@@ -15,7 +15,7 @@ namespace Game2
         {
             _zoom = 1.0f;
             _rotation = 0.0f;
-            _pos = new Vector2(365, 250);
+            _pos = new Vector2(0, 0);
         }
 
         public float Zoom

@@ -167,7 +167,6 @@ namespace StarKampf_server
             int[] arr;
             switch ((Units)ArrOfCms[1])
             {
-
                 case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file
@@ -186,6 +185,19 @@ namespace StarKampf_server
                     break;
 
             }
+
+            return 0;
+        }
+
+        private int IniMap()
+        {
+            int[] arr;
+
+            arr = System.IO.File.ReadAllText("Map/map.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+
+
+            Console.WriteLine("Ini Map");
 
             return 0;
         }
