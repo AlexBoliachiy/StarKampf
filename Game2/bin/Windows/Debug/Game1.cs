@@ -15,6 +15,9 @@ namespace Game2
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 720;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
            // graphics.IsFullScreen = true;
             
@@ -88,7 +91,6 @@ namespace Game2
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
             player.Draw();
             base.Draw(gameTime);

@@ -41,11 +41,13 @@ namespace Game2
         private Rectangle spriteRectangle;// Для корректной отрисовки поворота юнита
         private Vector2 spriteOrigin;// Центр спрайта
         private int side; // определяет сторону игрока .
+
         //
         private List<BaseUnit> VecUnits;// allusion to c++
 
         //
         public Interface Inter;
+        public Map map;
         //
         private double interval;
         private int[][] IntCommands;
@@ -67,14 +69,14 @@ namespace Game2
             side = 0; //  later somebody need make ini side in moment connecting to the server
             outMsg = client.CreateMessage();
             sw = new Stopwatch();
+
             //
             //
             VecUnits = new List<BaseUnit>();
             VecUnits.Capacity = 128;
-
-
             //ini timer 
             Inter = new Interface(GraphicsDevice, 0); // Обязательно исправить когда будет корректная инициализация сервером.
+            map = new Map();
         }
 
 
@@ -105,7 +107,7 @@ namespace Game2
                 }
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
-                    SendMsgIniUnit(0, 300, 300);
+                    SendMsgIniUnit(0, 2425, 1390);
                     DG = true;
                 }
                 //
@@ -129,14 +131,21 @@ namespace Game2
         public void Draw()
         {
             // Who will engage with Interface class?
+<<<<<<< HEAD
 
             //Draw all there
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
+=======
+            // You shoud draw it there;
+            map.DrawMap(GraphicsDevice, Inter.camera);
+>>>>>>> 3070b4df77aa3391b557f3e62f32699ec7c62c39
             DrawUnits();
             Inter.Draw();
             //
             sprite.End();
         }
+
+
 
         private int DrawUnits()
         {
@@ -222,7 +231,6 @@ namespace Game2
                 .ToArray();
                 i++;
             }
-
         }
         private void AnalyzeCommands()
         {

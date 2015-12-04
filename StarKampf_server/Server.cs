@@ -167,7 +167,6 @@ namespace StarKampf_server
             int[] arr;
             switch ((Units)ArrOfCms[1])
             {
-
                 case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file

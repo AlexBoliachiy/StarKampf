@@ -33,6 +33,7 @@ namespace Game2
 
         private int side;
         private List<BaseUnit> selectedUnits;
+        private KeyboardState keyboardState; // playing with camera
 
 
         private const int HealthInSquare = 200; //Count of health in one square 
@@ -58,7 +59,27 @@ namespace Game2
         {
             mouseState = Mouse.GetState();
 
+            keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > 640)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(-10, 0); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.W) && camera._pos.Y > 370)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(0, -10); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.S) && camera._pos.Y < 2408)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(0, +10); //camera movement
+            }                                       //camera movement
+            if (keyboardState.IsKeyDown(Keys.D) && camera._pos.X < 4214)    //camera movement
+            {                                       //camera movement
+                camera._pos += new Vector2(10, 0);  //camera movement
+            }                                       //camera movement
+
             // I thought thic code is extremely simple
+
 
             if (isClicded == false && mouseState.LeftButton == ButtonState.Pressed) // If clicked fisrt time
             {
