@@ -55,19 +55,19 @@ namespace Game2
 
             keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > -1920)    //camera movement
+            if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > 640)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(-10, 0); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.W) && camera._pos.Y > -1080)    //camera movement
+            if (keyboardState.IsKeyDown(Keys.W) && camera._pos.Y > 370)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(0, -10); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.S) && camera._pos.Y < 1080)    //camera movement
+            if (keyboardState.IsKeyDown(Keys.S) && camera._pos.Y < 2408)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(0, +10); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.D) && camera._pos.X < 1920)    //camera movement
+            if (keyboardState.IsKeyDown(Keys.D) && camera._pos.X < 4214)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(10, 0);  //camera movement
             }                                       //camera movement

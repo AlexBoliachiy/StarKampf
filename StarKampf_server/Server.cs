@@ -189,19 +189,6 @@ namespace StarKampf_server
             return 0;
         }
 
-        private int IniMap()
-        {
-            int[] arr;
-
-            arr = System.IO.File.ReadAllText("Map/map.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-
-
-
-            Console.WriteLine("Ini Map");
-
-            return 0;
-        }
-
         private void UpdateUnits(double Interval)
         {
                 foreach (BaseUnit Unit in UnitsList)

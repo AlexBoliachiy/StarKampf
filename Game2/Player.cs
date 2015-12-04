@@ -107,7 +107,7 @@ namespace Game2
                 }
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)
                 {
-                    SendMsgIniUnit(0, 0, 0);
+                    SendMsgIniUnit(0, 2425, 1390);
                     DG = true;
                 }
                 //

@@ -10,12 +10,14 @@ namespace Game2
         public Matrix _transform; // Matrix Transform
         public Vector2 _pos; // Camera Position
         protected float _rotation; // Camera Rotation
+        private int tileWidth = 256;
+        private int tileHeight = 132;
 
         public Camera2D()
         {
             _zoom = 1.0f;
             _rotation = 0.0f;
-            _pos = new Vector2(0, 0);
+            _pos = new Vector2(2427, 1390);
         }
 
         public float Zoom
