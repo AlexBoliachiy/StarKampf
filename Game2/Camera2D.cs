@@ -13,7 +13,7 @@ namespace Game2
 
         public Camera2D()
         {
-            _zoom = 1.0f;
+            _zoom = 1f;
             _rotation = 0.0f;
             _pos = new Vector2(365, 250);
         }

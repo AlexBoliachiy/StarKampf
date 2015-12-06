@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 /  отображение меню постройки строительных юнитов ( тоже самое по сути ) 
 /  Само собой все это должно красиво выглядеть , быть обведенным в какую-нибудь рамочку, а если пойдет то и логотипчик можно какой-либо 
 /  отображать
-/  Хорошо бы также малевать миникарту, но у нас пока недостаточно наработано для этого .
+/  Хорошо бы также малевать миникарту, но у нас пока недостаточно наработано для этого.
 /  
 /  Также именно тут происходит выделение юнитов в подгрупы и отдача им приказов 
 */ 
@@ -33,6 +33,12 @@ namespace Game2
 
         private int side;
         private List<BaseUnit> selectedUnits;
+
+
+        private const int HealthInSquare = 200; //Count of health in one square 
+        private const int WidthOfSquare = 15;
+       // private const int DistanceToHealthLine = 60;
+        private const int HeightOfSquare = 20;
 
         public Interface(GraphicsDevice graphics, int side)
         {
@@ -92,7 +98,7 @@ namespace Game2
                 for (int i=0; i < selectedUnits.Count(); i++)
                 {
                     commands += "1" + " " + selectedUnits[i].GN.ToString() + " " +
-                                currentMousePos.X.ToString() + " " + currentMousePos.Y.ToString() + " " + "\n";
+                               ((int)currentMousePos.X).ToString() + " " + ((int)currentMousePos.Y).ToString() + " " + "\n";
                 }
                 if (commands == string.Empty)
                     return null;
@@ -107,32 +113,30 @@ namespace Game2
             
             if (isDrawable == false)
                 return;
-
-            // draw selecting rectangle; 4 line =  1 rectangle
             sprite.Begin(SpriteSortMode.BackToFront,
                        BlendState.AlphaBlend,
                        null,
                        null,
                        null,
                        null,
-                       this.camera.GetTransformation(graphics));
-            DrawLine(new Vector2(firstLeftClickCoord.X, firstLeftClickCoord.Y), new Vector2(firstLeftClickCoord.X, currentMousePos.Y));
-            DrawLine(new Vector2(firstLeftClickCoord.X, firstLeftClickCoord.Y), new Vector2(currentMousePos.X, firstLeftClickCoord.Y));
-            DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2(currentMousePos.X, firstLeftClickCoord.Y));
-            DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2( firstLeftClickCoord.X, currentMousePos.Y));
+                       camera.GetTransformation(graphics));
+            // draw selecting rectangle; 4 line =  1 rectangle
+            DrawLine(new Vector2(firstLeftClickCoord.X, firstLeftClickCoord.Y), new Vector2(firstLeftClickCoord.X, currentMousePos.Y), Color.Red);
+            DrawLine(new Vector2(firstLeftClickCoord.X, firstLeftClickCoord.Y), new Vector2(currentMousePos.X, firstLeftClickCoord.Y), Color.Red);
+            DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2(currentMousePos.X, firstLeftClickCoord.Y), Color.Red);
+            DrawLine(new Vector2(currentMousePos.X, currentMousePos.Y), new Vector2( firstLeftClickCoord.X, currentMousePos.Y), Color.Red);
             sprite.End();
-
         }
 
         // Just drawing line 
-        public void DrawLine(Vector2 begin, Vector2 end, int width = 1)
+        public void DrawLine(Vector2 begin, Vector2 end, Color color, int width = 2 )
         {
             Rectangle r = new Rectangle((int)begin.X, (int)begin.Y, (int)(end - begin).Length() + width, width);
             Vector2 v = Vector2.Normalize(begin - end);
             float angle = (float)Math.Acos(Vector2.Dot(v, -Vector2.UnitX));
             if (begin.Y > end.Y)
                 angle = MathHelper.TwoPi - angle;
-            sprite.Draw(Pixel, r, null, Color.Red, angle, Vector2.Zero, SpriteEffects.None, 0);
+            sprite.Draw(Pixel, r, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
         }
 
 
@@ -166,6 +170,42 @@ namespace Game2
 
             }
 
+        }
+
+        public void DrawHealthUnderAllUnit(List<BaseUnit> VecUnits, Texture2D[] AllTextures)
+        {
+            foreach (BaseUnit A in VecUnits)
+            {
+                int DistanceToHealthLine = Math.Max(AllTextures[A.id].Width, AllTextures[A.id].Height);
+                int CountOfHealthSquare =  A.MaxHealth / HealthInSquare;
+                int widthOfLine = CountOfHealthSquare * WidthOfSquare;
+                int leftX = (int)A.X - widthOfLine / 2; // Считаем координаты, откуда будет начинать рисоваться линия хп.
+                int leftY = (int)A.Y - DistanceToHealthLine;
+                sprite.Begin(SpriteSortMode.Deferred,
+                       BlendState.AlphaBlend,
+                       null,
+                       null,
+                       null,
+                       null,
+                       camera.GetTransformation(graphics));
+                sprite.Draw(Pixel, new Rectangle(leftX, leftY, (int)((float)A.MaxHealth /(float)A.Health) * CountOfHealthSquare * WidthOfSquare, HeightOfSquare),
+                                                Color.Tomato); //Рисуем заполнение линии хп
+                DrawLine(new Vector2(leftX, leftY), new Vector2(leftX + widthOfLine, leftY), Color.Black);
+                DrawLine(new Vector2(leftX, leftY + HeightOfSquare), new Vector2(leftX + widthOfLine, leftY + HeightOfSquare), Color.Black);
+
+                for (int i = 0; i < CountOfHealthSquare + 1; i++)
+                {
+
+                    DrawLine(new Vector2(leftX+i*WidthOfSquare,leftY),new Vector2(leftX + i * WidthOfSquare, leftY+HeightOfSquare),Color.Black);
+
+                }
+
+
+                sprite.End();
+
+
+
+            }
         }
     }
 }

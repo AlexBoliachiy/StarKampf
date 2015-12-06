@@ -18,7 +18,7 @@ namespace Game2
             this.damage = damage;
             this.Countdown = countdown;
             this.side = side;
-            this.MaxHealth = MaxHealth;
+            this._MaxHealth = MaxHealth;
             this.angle = 0;
             health = MaxHealth;
             this.IN = IN;
