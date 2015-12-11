@@ -183,7 +183,6 @@ namespace Game2
                 {
                     selectedUnits.Add(VecUnits[i]);
                 }
-
             }
 
         }

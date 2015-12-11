@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game2
 {
@@ -25,6 +28,18 @@ namespace Game2
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
+
+        public Rectangle SpriteRectangle
+        {
+            get
+            {
+                return new Rectangle((int)this.x,
+                    (int)this.y,
+                    125,
+                    63);
+            }
+        }
+
         protected void SetTarget(BaseUnit unit)
         { 
              

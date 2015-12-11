@@ -15,11 +15,15 @@ namespace Game2
         public bool IsMoving { get { return isMoving; } }
         protected bool isRotating;
         public bool IsRotating { get { return isRotating; } }
+
+
         protected MovingUnit() // Prevent ini any objects this class
         {
         }
 
         protected float Omega { get { return this.Speed / 200.0f; } }
+
+
 
         public override void SetMoveDest(int x, int y)
         {
@@ -55,6 +59,7 @@ namespace Game2
                 return;
             }
         }
+
 
         protected void move(double Interval)
         {

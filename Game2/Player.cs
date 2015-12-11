@@ -38,7 +38,6 @@ namespace Game2
         //using for drawing object on the map;
         private Texture2D[] allTextures;
         private SpriteBatch sprite;
-        private Rectangle spriteRectangle;// Для корректной отрисовки поворота юнита
         private Vector2 spriteOrigin;// Центр спрайта
         private int side; // определяет сторону игрока .
 
@@ -132,7 +131,7 @@ namespace Game2
         {
             // Who will engage with Interface class?
             // You shoud draw it there;
-            map.DrawMap(GraphicsDevice, Inter.camera);
+            map.DrawMap(GraphicsDevice, Inter.camera, VecUnits);
             DrawUnits();
             Inter.Draw();
         }
@@ -150,15 +149,10 @@ namespace Game2
                        null,
                        Inter.camera.GetTransformation(GraphicsDevice));
 
-
-
             for (int i = 0; i < VecUnits.Count; i++)
             {
                 int id = VecUnits[i].id;
-                spriteRectangle = new Rectangle((int)VecUnits[i].X,
-                                                (int)VecUnits[i].Y,
-                                                allTextures[id].Width,
-                                                allTextures[id].Height);
+                
                 spriteOrigin = new Vector2(allTextures[id].Width / 2, allTextures[id].Height / 2);
 
                 sprite.Draw(allTextures[id], new Vector2((int)VecUnits[i].X, (int)VecUnits[i].Y),

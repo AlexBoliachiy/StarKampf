@@ -20,7 +20,11 @@ namespace Game2
         private Texture2D texture;
         private Camera2D camera;
 
+        private List<Rectangle> wallList;
+
         private int[,] map;
+
+        private bool flag = false;
 
         public int this[int i, int j] { get { return map[i, j]; } }
 
@@ -31,6 +35,7 @@ namespace Game2
         {
             map = new int[19, 21];
             StreamReader reader = new StreamReader("Map/map.txt");
+            wallList = new List<Rectangle>();
 
             for (int j = 0; j < 21; j++)
             {
@@ -44,11 +49,26 @@ namespace Game2
             }
         }
 
-        public int DrawMap(GraphicsDevice graphicsDevice, Camera2D camera)
+        protected Rectangle ifColides(BaseUnit test)
+        {
+            foreach (Rectangle wall in wallList)
+            {
+                if (!Rectangle.Intersect(wall, test.SpriteRectangle).IsEmpty)
+                {
+                    return wall;
+                }
+            }
+            return new Rectangle();
+;
+        }
+
+        public int DrawMap(GraphicsDevice graphicsDevice, Camera2D camera, List<BaseUnit> VecUnits)
         {
             sprite = new SpriteBatch(graphicsDevice);
             texture = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             texture.SetData<Color>(new Color[] { Color.Red });
+
+           
             sprite.Begin(SpriteSortMode.BackToFront,
                                    BlendState.AlphaBlend,
                                    null,
@@ -62,10 +82,24 @@ namespace Game2
                 {
                     if (this[i, j] == 1)
                     {
-                        sprite.Draw(texture, new Rectangle(i * tileWidth, j * tileHeight, tileWidth, tileHeight), Color.Red);
+                        Rectangle tmp = new Rectangle(i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+                        if (!flag) { wallList.Add(tmp); }
+                        sprite.Draw(texture, tmp, Color.Red );
+                        if (flag)
+                        {
+                            foreach (BaseUnit test in VecUnits)
+                            {
+                                if (!ifColides(test).IsEmpty)
+                                {
+                                    sprite.Draw(texture, ifColides(test), new Color(100, 100, 100, 100));
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            flag = true;
             sprite.End();
             return 0;
         }
