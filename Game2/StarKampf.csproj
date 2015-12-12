@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\map.txt" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

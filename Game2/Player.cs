@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.Diagnostics;
+
 namespace Game2
 {
     class Player
@@ -22,7 +23,7 @@ namespace Game2
 
         enum Units
         {
-            unicorn = 0
+            unicorn = 0,
         }
 
         //Для подключения к серверу
@@ -31,12 +32,16 @@ namespace Game2
         private NetIncomingMessage inMsg;
         private NetOutgoingMessage outMsg;
         private const double timeDivider = 30;
+        private Rectangle wallBound;
+
+        private KeyboardState keyboardState; // for testing
 
         //
         private GraphicsDevice GraphicsDevice;
 
         //using for drawing object on the map;
         private Texture2D[] allTextures;
+        Texture2D wallTexture;
         private SpriteBatch sprite;
         private Vector2 spriteOrigin;// Центр спрайта
         private int side; // определяет сторону игрока .
@@ -68,14 +73,13 @@ namespace Game2
             side = 0; //  later somebody need make ini side in moment connecting to the server
             outMsg = client.CreateMessage();
             sw = new Stopwatch();
-
             //
             //
             VecUnits = new List<BaseUnit>();
             VecUnits.Capacity = 128;
             //ini timer 
-            Inter = new Interface(GraphicsDevice, 0); // Обязательно исправить когда будет корректная инициализация сервером.
             map = new Map();
+            Inter = new Interface(GraphicsDevice, 0, map); // Обязательно исправить когда будет корректная инициализация сервером.
         }
 
 
@@ -106,7 +110,7 @@ namespace Game2
                 }
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)
                 {
-                    SendMsgIniUnit(0, 2425, 1390);
+                    SendMsgIniUnit(0, 384, 384);
                     DG = true;
                 }
                 //
@@ -123,7 +127,7 @@ namespace Game2
 
             foreach (BaseUnit Unit in VecUnits)
             {
-                Unit.Act(interval);
+                Unit.Act(interval, map);
             }
         }
 
@@ -131,7 +135,7 @@ namespace Game2
         {
             // Who will engage with Interface class?
             // You shoud draw it there;
-            map.DrawMap(GraphicsDevice, Inter.camera, VecUnits);
+            DrawMap();
             DrawUnits();
             Inter.Draw();
         }
@@ -152,7 +156,6 @@ namespace Game2
             for (int i = 0; i < VecUnits.Count; i++)
             {
                 int id = VecUnits[i].id;
-                
                 spriteOrigin = new Vector2(allTextures[id].Width / 2, allTextures[id].Height / 2);
 
                 sprite.Draw(allTextures[id], new Vector2((int)VecUnits[i].X, (int)VecUnits[i].Y),
@@ -163,9 +166,35 @@ namespace Game2
             return 0;
         }
 
-        public void IniTextures(Texture2D[] texture)
+        private int DrawMap()
+        {
+            sprite.Begin(SpriteSortMode.BackToFront,
+                                   BlendState.AlphaBlend,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   Inter.camera.GetTransformation(GraphicsDevice));
+
+            for (int i = 0; i < map.width; i++)
+            {
+                for (int j = 0; j < map.height; j++)
+                {
+                    if (map[i, j] == 1)
+                    {
+                        Rectangle tmp = new Rectangle(i * map.tileWidth, j * map.tileHeight, map.tileWidth, map.tileHeight);
+                        sprite.Draw(wallTexture, tmp, Color.White);
+                    }
+                }
+            }
+            sprite.End();
+            return 0;
+        }
+
+        public void IniTextures(Texture2D[] texture, Texture2D wallTexture)
         {
             allTextures = texture;
+            this.wallTexture = wallTexture;
         }
 
         private void SendMsgIniUnit(int ID, int x, int y)
@@ -248,7 +277,6 @@ namespace Game2
             }
         }
 
-
         private void IniUnit(int NumberOfCurCMS)
         {
             switch ((Units)IntCommands[NumberOfCurCMS][1])
@@ -278,7 +306,7 @@ namespace Game2
         private void MoveUnit(int NumberOfCurCMS)
         {
             BaseUnit movingUnit = FindInList(VecUnits, IntCommands[NumberOfCurCMS][1]);
-            movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3]);
+            movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3], map);
 
         }
 

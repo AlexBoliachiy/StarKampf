@@ -29,17 +29,6 @@ namespace Game2
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
 
-        public Rectangle SpriteRectangle
-        {
-            get
-            {
-                return new Rectangle((int)this.x,
-                    (int)this.y,
-                    125,
-                    63);
-            }
-        }
-
         protected void SetTarget(BaseUnit unit)
         { 
              
@@ -57,13 +46,14 @@ namespace Game2
 
         }
 
-        public virtual void Act(double Interval)
+        public virtual void Act(double Interval, Map map)
         {
 
         }
+
         public virtual string GetUnitProperties { get { return string.Empty; } set { ;} }
 
-        public virtual void SetMoveDest(int x, int y)
+        public virtual void SetMoveDest(int x, int y, Map map)
         {
 
         }
