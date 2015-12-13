@@ -12,30 +12,39 @@ namespace Game2
 {
     class Interface
     {
-        
         private Vector2 firstLeftClickCoord; //
         private Vector2 currentMousePos;     //
         private MouseState mouseState;       // this is all for drawing  selecting rectangle
+        private KeyboardState keyboardState;
         private bool isClicded;              //
         private bool isDrawable;             //
         private SpriteBatch sprite;          //
         public Texture2D Pixel;              //
         public Camera2D camera;              //
         public GraphicsDevice graphics;      //
+        public Map map;
+        private int screenWight = 1280;
+        private int screenHeight = 720;
+
 
         private int side;
         private List<BaseUnit> selectedUnits;
-        private KeyboardState keyboardState; // playing with camera
 
+<<<<<<< HEAD
 
         private const int HealthInSquare = 200; //Count of health in one square 
         private const int WidthOfSquare = 60;
         private const int HeightOfSquare = 80;
 
         public Interface(GraphicsDevice graphics, int side)
+=======
+        public Interface(GraphicsDevice graphics, int side, Map map)
+>>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
         {
             mouseState = Mouse.GetState();// ini mouse state
+            keyboardState = Keyboard.GetState();
             sprite = new SpriteBatch(graphics);
+            this.map = map;
 
             Pixel = new Texture2D(graphics, 1, 1); // ini pixel for drawing line 
             Pixel.SetData( new[] { Color.White } ) ;
@@ -52,20 +61,25 @@ namespace Game2
 
             //TODO исправить код ниже на управление мышкой, убрать магические числа.
             keyboardState = Keyboard.GetState();
+<<<<<<< HEAD
             
             if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > 640)    //camera movement
+=======
+
+            if (mouseState.Position.X < 50 && camera._pos.X > screenWight / 2)    //camera movement
+>>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
             {                                       //camera movement
                 camera._pos += new Vector2(-10, 0); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.W) && camera._pos.Y > 370)    //camera movement
+            if (mouseState.Position.Y < 50 && camera._pos.Y > screenHeight / 2)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(0, -10); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.S) && camera._pos.Y < 2408)    //camera movement
+            if (mouseState.Position.Y > 680 && camera._pos.Y < map.tileHeight * map.height - screenHeight / 2) //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(0, +10); //camera movement
             }                                       //camera movement
-            if (keyboardState.IsKeyDown(Keys.D) && camera._pos.X < 4214)    //camera movement
+            if (mouseState.Position.X > 1230 && camera._pos.X < map.tileWidth * map.width - screenWight / 2)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(10, 0);  //camera movement
             }                                       //camera movement
@@ -183,7 +197,6 @@ namespace Game2
                 {
                     selectedUnits.Add(VecUnits[i]);
                 }
-
             }
 
         }

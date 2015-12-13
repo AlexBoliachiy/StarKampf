@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 //Осторожно, некоторые строки в сервере и в клиенте отличаются
 namespace Game2
 {
@@ -34,9 +37,9 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
-        public override void Act(double Interval)
+        public override void Act(double Interval, Map map)
         {
-            base.Act(Interval);
+            base.Act(Interval, map);
         }
     }
 }

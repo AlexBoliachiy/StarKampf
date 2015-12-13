@@ -46,16 +46,20 @@ namespace Game2
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             string[] PathToTextures;
+<<<<<<< HEAD
             PathToTextures = System.IO.File.ReadAllText("Content\\Textures\\Textures.txt").Split('\n');
+=======
+            PathToTextures = System.IO.File.ReadAllText("Textures.txt").Split('\n', '\r');
+>>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
             Texture2D [] allTextures = new Texture2D[PathToTextures.Length];
-            for (int i = 0; i < PathToTextures.Length; i++)
+            for (int i = 0; i < PathToTextures.Length; i+=2)
             {
                 allTextures[i] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i]);
             }
-            player.IniTextures(allTextures);
-
+            
+            Texture2D wallTexture = Content.Load<Texture2D>("Textures\\wall.png");
+            player.IniTextures(allTextures, wallTexture);
             // TODO: use this.Content to load your game content here
         }
 

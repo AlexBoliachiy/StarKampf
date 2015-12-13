@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game2
 {
@@ -26,6 +29,7 @@ namespace Game2
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
+
         protected void SetTarget(BaseUnit unit)
         { 
              
@@ -44,13 +48,14 @@ namespace Game2
 
         }
 
-        public virtual void Act(double Interval)
+        public virtual void Act(double Interval, Map map)
         {
 
         }
+
         public virtual string GetUnitProperties { get { return string.Empty; } set { ;} }
 
-        public virtual void SetMoveDest(int x, int y)
+        public virtual void SetMoveDest(int x, int y, Map map)
         {
 
         }
