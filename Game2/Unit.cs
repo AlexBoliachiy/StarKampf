@@ -54,6 +54,10 @@ namespace Game2
         {
 
         }
+        public virtual void SetBuild(int ID)
+        {
+
+        }
 
     }//private constructor
 

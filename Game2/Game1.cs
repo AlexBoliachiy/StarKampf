@@ -48,7 +48,7 @@ namespace Game2
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             string[] PathToTextures;
-            PathToTextures = System.IO.File.ReadAllText("Textures.txt").Split('\n');
+            PathToTextures = System.IO.File.ReadAllText("Content\\Textures\\Textures.txt").Split('\n');
             Texture2D [] allTextures = new Texture2D[PathToTextures.Length];
             for (int i = 0; i < PathToTextures.Length; i++)
             {

@@ -7,15 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
-/* Тут Амир должен запилить такие вещи: отображение выбранных юнитов, это для начала 
-/  далее надо будет замутить отображение меню юнитов для постройки (когда например выбраны одни заводы)
-/  отображение меню постройки строительных юнитов ( тоже самое по сути ) 
-/  Само собой все это должно красиво выглядеть , быть обведенным в какую-нибудь рамочку, а если пойдет то и логотипчик можно какой-либо 
-/  отображать
-/  Хорошо бы также малевать миникарту, но у нас пока недостаточно наработано для этого.
-/  
-/  Также именно тут происходит выделение юнитов в подгрупы и отдача им приказов 
-*/ 
+
 namespace Game2
 {
     class Interface
@@ -37,9 +29,8 @@ namespace Game2
 
 
         private const int HealthInSquare = 200; //Count of health in one square 
-        private const int WidthOfSquare = 15;
-       // private const int DistanceToHealthLine = 60;
-        private const int HeightOfSquare = 20;
+        private const int WidthOfSquare = 60;
+        private const int HeightOfSquare = 80;
 
         public Interface(GraphicsDevice graphics, int side)
         {
@@ -59,8 +50,9 @@ namespace Game2
         {
             mouseState = Mouse.GetState();
 
+            //TODO исправить код ниже на управление мышкой, убрать магические числа.
             keyboardState = Keyboard.GetState();
-
+            
             if (keyboardState.IsKeyDown(Keys.A) && camera._pos.X > 640)    //camera movement
             {                                       //camera movement
                 camera._pos += new Vector2(-10, 0); //camera movement
@@ -105,7 +97,6 @@ namespace Game2
             {
                 if (VecUnits.Count == 0)
                     return null;
-                string commands = string.Empty;
                 currentMousePos = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));
                 /* for (int j=0; j < VecUnits.Count; i++)
                      {
@@ -114,19 +105,23 @@ namespace Game2
                        2. Проверку на то, не перекает ли currentMousePos rect каждого юнита в Vecunits 
                        3 Если есть хоть какой-то юнит, и он вражеский, формируем запрос на атаку, возвращаем строку, и там уже она отошлется
                      } */
-                // Если никакого юнита там нет, формируем запрос на перемещение.
+                // Если никакого юнита там нет, формируем запрос на перемещение
 
-                for (int i=0; i < selectedUnits.Count(); i++)
-                {
-                    commands += "1" + " " + selectedUnits[i].GN.ToString() + " " +
-                               ((int)currentMousePos.X).ToString() + " " + ((int)currentMousePos.Y).ToString() + " " + "\n";
-                }
-                if (commands == string.Empty)
-                    return null;
-
-                return commands;
+                return PrepareRequestMoveUnit();
             }
             return null;
+        }
+        private  string PrepareRequestMoveUnit()
+        {
+            string commands = String.Empty;
+
+            for (int i = 0; i < selectedUnits.Count(); i++)
+            {
+                 commands += "1" + " " + selectedUnits[i].GN.ToString() + " " +
+                           ((int)currentMousePos.X).ToString() + " " + ((int)currentMousePos.Y).ToString() + " " + side.ToString() + "\n";
+            }
+            if (commands == string.Empty) return null;
+            else return commands;
         }
 
         public void Draw()
@@ -150,7 +145,7 @@ namespace Game2
         }
 
         // Just drawing line 
-        public void DrawLine(Vector2 begin, Vector2 end, Color color, int width = 2 )
+        public void DrawLine(Vector2 begin, Vector2 end, Color color, int width = 15 )
         {
             Rectangle r = new Rectangle((int)begin.X, (int)begin.Y, (int)(end - begin).Length() + width, width);
             Vector2 v = Vector2.Normalize(begin - end);
