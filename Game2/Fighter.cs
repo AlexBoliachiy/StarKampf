@@ -37,9 +37,9 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
-        public override void Act(double Interval, Map map)
+        public override void Act(double Interval)
         {
-            base.Act(Interval, map);
+            base.Act(Interval);
         }
     }
 }

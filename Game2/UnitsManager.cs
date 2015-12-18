@@ -10,10 +10,17 @@ using System.Diagnostics;
 
 namespace Game2
 {
-    class UnitsManager
+     class UnitsManager
     {
 
         private List<BaseUnit> VecUnits;
+
+        public UnitsManager(List<BaseUnit> _VecUnits, Map map)
+        {
+            VecUnits = _VecUnits;
+            VecUnits.Capacity = 128;
+            BaseUnit.InitializeMap(map);
+        }
 
 
         enum Commands
@@ -27,9 +34,9 @@ namespace Game2
             unicorn = 0
         }
 
-        private void IniUnit(int NumberOfCurCMS)
+        public void IniUnit(int[] IntCommands)
         {
-            switch ((Units)IntCommands[NumberOfCurCMS][1])
+            switch ((Units)IntCommands[1])
             {
                 case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
@@ -38,11 +45,11 @@ namespace Game2
 
                     int[] arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
-                    VecUnits.Add(new Fighter(IntCommands[NumberOfCurCMS][1],
-                                             IntCommands[NumberOfCurCMS][2],
-                                             IntCommands[NumberOfCurCMS][3],
-                                             IntCommands[NumberOfCurCMS][4],
-                                             IntCommands[NumberOfCurCMS][5],
+                    VecUnits.Add(new Fighter(IntCommands[1],
+                                             IntCommands[2],
+                                             IntCommands[3],
+                                             IntCommands[4],
+                                             IntCommands[5],
                                              "unicorn", arr[0], arr[1], arr[2], arr[3]));
 
                     break;
@@ -53,11 +60,11 @@ namespace Game2
             }
         }
 
-        private void MoveUnit(int NumberOfCurCMS)
+        public void MoveUnit(int[] IntCommands)
         {
-            BaseUnit movingUnit = FindInList(VecUnits, IntCommands[NumberOfCurCMS][1]);
-            movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3]);
-
+            var Unit = FindInList(VecUnits, IntCommands[1]);
+            if (Unit != null)
+                Unit.SetMoveDest(IntCommands[2], IntCommands[3]);
         }
 
         private BaseUnit FindInList(List<BaseUnit> VecUnits, int IN)

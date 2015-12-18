@@ -54,7 +54,7 @@ namespace Game2
             return false;
         }
 
-        protected bool isCollides(Map map) // поиск колизий
+        protected bool isCollides() // поиск колизий
         {
             unitBound = new Rectangle((int)this.X - textureWight/2, (int)this.Y - textureHeight/2, textureWight, textureHeight);
             for (int i = 0; i < map.width; i++)
@@ -74,7 +74,7 @@ namespace Game2
             return false;
         }
 
-        public override void SetMoveDest(int x, int y, Map map)
+        public override void SetMoveDest(int x, int y)
         {
             this.Dx = x - this.x;// Берем относительные координаты
             this.Dy = y - this.y;//
@@ -108,7 +108,7 @@ namespace Game2
         }
 
 
-        protected void move(double Interval, Map map)
+        protected void move(double Interval )
         {
             /* Тут ты должен сделать перемещение юнита из точки в которой он находится в точку 
             /  которую хранят Дх и Ду. Отправка этих значений со стороны клиента - забота моя.
@@ -135,7 +135,7 @@ namespace Game2
                 this.y += Ny * Speed * Interval;
                 Dx -= Nx * Speed * Interval;
                 Dy -= Ny * Speed * Interval;
-                if (isCollides(map))// обработка кол
+                if (isCollides())// обработка кол
                 {
                     this.x -= Nx * Speed * Interval;
                     this.y -= Ny * Speed * Interval;
@@ -159,9 +159,9 @@ namespace Game2
             return (Math.Pow((int)(Nx * Speed * Interval), 2) + Math.Pow((int)(Ny * Speed * Interval), 2)); 
         }
 
-        public override void Act(double Interval, Map map)
+        public override void Act(double Interval)
         {
-            move(Interval, map);
+            move(Interval);
         }
 
     }
