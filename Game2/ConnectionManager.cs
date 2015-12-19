@@ -71,7 +71,7 @@ namespace Game2
                 }
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
-                    SendMsgIniUnit(0, -500, 0);
+                    SendMsgIniUnit(0, 368, 368);
                     DG = true;
                 }
                 
