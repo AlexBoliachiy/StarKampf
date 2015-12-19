@@ -22,3 +22,6 @@ C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\Lidgren.Netw
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
 C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
+C:\Users\Igor\Desktop\StarKampf-master\StarKampf_server\bin\Debug\StarKampf_server.exe.config
+C:\Users\Igor\Desktop\StarKampf-master\StarKampf_server\obj\Debug\StarKampf_server.exe
+C:\Users\Igor\Desktop\StarKampf-master\StarKampf_server\obj\Debug\StarKampf_server.pdb

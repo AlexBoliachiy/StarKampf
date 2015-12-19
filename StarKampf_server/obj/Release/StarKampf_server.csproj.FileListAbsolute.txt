@@ -5,3 +5,6 @@ C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKamp
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\bin\Release\Lidgren.Network.pdb
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\obj\Release\StarKampf_server.exe
 C:\Users\Андрюха\documents\visual studio 2015\Projects\StarKampf\StarKampf_server\obj\Release\StarKampf_server.pdb
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Release\StarKampf_server.exe.config
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Release\StarKampf_server.exe
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Release\StarKampf_server.pdb
