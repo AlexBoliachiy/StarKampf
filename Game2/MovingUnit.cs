@@ -20,7 +20,7 @@ namespace Game2
         protected bool isRotating;
         public bool IsRotating { get { return isRotating; } }
         private Rectangle unitBound; // unit bounding box, used for detecting collision
-        private int textureWight = 75, textureHeight = 50;
+        private int textureWight = 70, textureHeight = 50;
         private List<Point> pointList;
         private int wayPoint;
         protected MovingUnit() // Prevent ini any objects this class
