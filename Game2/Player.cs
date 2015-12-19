@@ -140,7 +140,6 @@ namespace Game2
                                    null,
                                    null,
                                    Inter.camera.GetTransformation(GraphicsDevice));
-
             for (int i = 0; i < map.width; i++)
             {
                 for (int j = 0; j < map.height; j++)
