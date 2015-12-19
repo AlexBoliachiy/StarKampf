@@ -13,6 +13,8 @@ namespace Game2
     */
     class BaseUnit
     {
+        protected static Map map;
+
         protected int health;
         public int MaxHealth { get { return _MaxHealth; } }
         protected int _MaxHealth;
@@ -29,6 +31,11 @@ namespace Game2
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
+
+       public static void InitializeMap(Map _map)
+        {
+            map = _map;
+        }
 
         protected void SetTarget(BaseUnit unit)
         { 
@@ -48,14 +55,14 @@ namespace Game2
 
         }
 
-        public virtual void Act(double Interval, Map map)
+        public virtual void Act(double Interval)
         {
 
         }
 
         public virtual string GetUnitProperties { get { return string.Empty; } set { ;} }
 
-        public virtual void SetMoveDest(int x, int y, Map map)
+        public virtual void SetMoveDest(int x, int y)
         {
 
         }

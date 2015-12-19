@@ -26,16 +26,14 @@ namespace Game2
             unicorn = 0,
         }
 
-        
+        private ConnectionManager conMan;
+
         private const double timeDivider = 30;
-<<<<<<< HEAD
      
-=======
         private Rectangle wallBound;
 
         private KeyboardState keyboardState; // for testing
 
->>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
         //
         private GraphicsDevice GraphicsDevice;
 
@@ -44,12 +42,9 @@ namespace Game2
         Texture2D wallTexture;
         private SpriteBatch sprite;
         private Vector2 spriteOrigin;// Центр спрайта
+
         private int side; // определяет сторону игрока .
 
-        //
-        
-
-        //
         public Interface Inter;
         public Map map;
         //
@@ -59,9 +54,14 @@ namespace Game2
         private Stopwatch sw;
         private string UnitSItuation = string.Empty; // Тут собираются все взаимодействия между юнитами, картой , потом это отправляется серверу
 
+        private List<BaseUnit> VecUnits;
+
         public Player(GraphicsDevice GraphicsDevice)
         {
             this.GraphicsDevice = GraphicsDevice;
+            conMan = new ConnectionManager();
+            VecUnits = new List<BaseUnit>();
+            sprite = new SpriteBatch(GraphicsDevice);
         }
 
         public void Initialize()
@@ -70,11 +70,12 @@ namespace Game2
             sw = new Stopwatch();
             //
             //
-            VecUnits = new List<BaseUnit>();
-            VecUnits.Capacity = 128;
+            
             //ini timer 
             map = new Map();
             Inter = new Interface(GraphicsDevice, 0, map); // Обязательно исправить когда будет корректная инициализация сервером.
+            conMan.Initialize(VecUnits, map);
+
         }
 
 
@@ -83,61 +84,25 @@ namespace Game2
             interval = sw.ElapsedMilliseconds / timeDivider;
             sw.Reset(); // reset the timer (change current time to 0)
             sw.Start();
-<<<<<<< HEAD
+            conMan.Update(Inter.Update(VecUnits));
            
-=======
-            while ((inMsg = client.ReadMessage()) != null)
-            {
-                switch (inMsg.MessageType)
-                {
-                    case NetIncomingMessageType.Data:
-                        ReadMsg();
-                        AnalyzeCommands();
-                        break;
-
-                    case NetIncomingMessageType.StatusChanged:
-                        // handle connection status messages
-
-
-                        break;
-                    default:
-                        Console.WriteLine("unhandled message with type: "
-                            + inMsg.MessageType);
-                        break;
-
-                }
-                if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)
-                {
-                    SendMsgIniUnit(0, 384, 384);
-                    DG = true;
-                }
-                //
-                client.Recycle(inMsg);
-            }
->>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
-
-            //Тут все очень просто. Если интерфейс возвращает непустую строку, значит там команды взаимодействия.
-            //Отправляем их
            
 
             foreach (BaseUnit Unit in VecUnits)
             {
-                Unit.Act(interval, map);
+                Unit.Act(interval);
             }
         }
 
         public void Draw()
         {
-<<<<<<< HEAD
-            map.DrawMap(GraphicsDevice, Inter.camera);
+            //map.DrawMap(GraphicsDevice, Inter.camera);
 
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
             
-=======
             // Who will engage with Interface class?
             // You shoud draw it there;
             DrawMap();
->>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
             DrawUnits();
             Inter.Draw();
         }
@@ -153,10 +118,7 @@ namespace Game2
                        null,
                        null,
                        Inter.camera.GetTransformation(GraphicsDevice));
-<<<<<<< HEAD
-=======
 
->>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
             for (int i = 0; i < VecUnits.Count; i++)
             {
                 int id = VecUnits[i].id;
@@ -180,12 +142,11 @@ namespace Game2
                                    null,
                                    null,
                                    Inter.camera.GetTransformation(GraphicsDevice));
-
             for (int i = 0; i < map.width; i++)
             {
                 for (int j = 0; j < map.height; j++)
                 {
-                    if (map[i, j] == 1)
+                    if (map[i, j] == 1) // Вынести все это дерьмо в метод карты. То есть должно быть map.draw();
                     {
                         Rectangle tmp = new Rectangle(i * map.tileWidth, j * map.tileHeight, map.tileWidth, map.tileHeight);
                         sprite.Draw(wallTexture, tmp, Color.White);
@@ -203,93 +164,12 @@ namespace Game2
         }
 
        
-
-
        
-
-
-<<<<<<< HEAD
-        
-=======
-        private void ReadMsg()
-        {
-            /*Приходит строка где записаны команды вот в таком формате разделенные символом перехода на следующую строку :
-            * gametime
-            * IDofCMD IN param
-            * -//-
-            * IDpfCMD - айди команды, IN идентификационый номер юнита, param параметры к команде.
-            * Итого на выходе из функции имеем зубчатый массив в котором каждая строка это одна команда.
-             */
-            string ListOfCmd = inMsg.ReadString();
-            LogMsg("Receive message : " + ListOfCmd);
-            // GetIntervalFromMsg( ref ListOfCmd);
-            IntCommands = new int[ListOfCmd.Split('\n').Count()][];
-            int i = 0;
-            foreach (string A in ListOfCmd.Split('\n'))
-            {
-                IntCommands[i] = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(n => int.Parse(n))
-                .ToArray();
-                i++;
-            }
-        }
-        private void AnalyzeCommands()
-        {
-            //Просто пробегаем по массиву и выполняем комманды
-            for (int i = 0; i < IntCommands.Count() - 1; i++)
-            {
-                if (IntCommands[i].Count() == 0)
-                    return;
-                //Определяем тип комманды
-                switch ((Commands)(IntCommands[i][0]))
-                {
-                    case Commands.iniUnit:
-                        IniUnit(i);
-                        break;
-
-                    case Commands.moveUnit://1 0 100 100 означает переместить юнит с ИН 0 в точку х = 100 у = 100;
-                        MoveUnit(i);
-                        
-                        break;
-
-                    default:
-                        break;
-
-
-                }
-            }
-        }
-
-        private void IniUnit(int NumberOfCurCMS)
-        {
-            switch ((Units)IntCommands[NumberOfCurCMS][1])
-            {
-                case Units.unicorn:
-                    //Temporary there is characteristic(???)  reading from .txt file.
-                    // Someone should make the same , but from .db file
-                    // as soon as possible
-
-                    int[] arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-
-                    VecUnits.Add(new Fighter(IntCommands[NumberOfCurCMS][1],
-                                             IntCommands[NumberOfCurCMS][2],
-                                             IntCommands[NumberOfCurCMS][3],
-                                             IntCommands[NumberOfCurCMS][4],
-                                             IntCommands[NumberOfCurCMS][5],
-                                             "unicorn", arr[0], arr[1], arr[2], arr[3]));
-
-                    break;
-
-
-                default:
-                    break;
-            }
-        }
 
         private void MoveUnit(int NumberOfCurCMS)
         {
             BaseUnit movingUnit = FindInList(VecUnits, IntCommands[NumberOfCurCMS][1]);
-            movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3], map);
+            movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3]);
 
         }
 
@@ -309,7 +189,6 @@ namespace Game2
         {
             File.AppendAllText("log.txt", message);
         }
->>>>>>> b18ae7c72ae02a983cb476a20c25a782941a7e3c
     }
 
 

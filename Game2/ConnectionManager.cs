@@ -27,16 +27,26 @@ namespace Game2
         private NetClient client;
         private NetIncomingMessage inMsg;
         private NetOutgoingMessage outMsg;
-        public int Initialize()
+        private int[][] IntCommands;
+
+        private UnitsManager unitsManager;
+
+        int side;
+
+        private bool DG;
+
+        public int Initialize(List<BaseUnit> VecUnits, Map map)
         {
             config = new NetPeerConfiguration("StarKampf");
             client = new NetClient(config);
             client.Start();
             client.Connect(host: "127.0.0.1", port: 12345);
-            int side = 0; //  later somebody need make ini side in moment connecting to the server // later means never
+            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never
             outMsg = client.CreateMessage();
+            unitsManager = new UnitsManager(VecUnits, map);
             return side;
         }
+
         public void Update(string ActionCommands)
         {
             while ((inMsg = client.ReadMessage()) != null)
@@ -59,17 +69,19 @@ namespace Game2
                         break;
 
                 }
-                if (client.ConnectionStatus == NetConnectionStatus.Connected)// ini there units per once
+                if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
-                    SendMsgIniUnit(0, 2425, 1390);
+                    SendMsgIniUnit(0, 368, 368);
+                    DG = true;
                 }
                 
-                if (ActionCommands != null)
-                {
-                    SendFormedRequest(ActionCommands);
-                }
+                
                 //
                 client.Recycle(inMsg);
+            }
+            if (ActionCommands != null)
+            {
+                SendFormedRequest(ActionCommands);
             }
         }
 
@@ -126,6 +138,7 @@ namespace Game2
                 i++;
             }
         }
+
         private void AnalyzeCommands()
         {
             //Просто пробегаем по массиву и выполняем комманды
@@ -137,12 +150,11 @@ namespace Game2
                 switch ((Commands)(IntCommands[i][0]))
                 {
                     case Commands.iniUnit:
-                        IniUnit(i);
+                        unitsManager.IniUnit(IntCommands[i]);
                         break;
 
                     case Commands.moveUnit://1 0 100 100 означает переместить юнит с ИН 0 в точку х = 100 у = 100;
-                        MoveUnit(i);
-
+                        unitsManager.MoveUnit(IntCommands[i]);
                         break;
 
                     default:
@@ -155,6 +167,7 @@ namespace Game2
         {
             // File.AppendAllText("log.txt", message);
         }
+
 
 
     }
