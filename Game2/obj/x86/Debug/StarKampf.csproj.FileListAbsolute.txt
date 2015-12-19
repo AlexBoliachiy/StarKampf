@@ -88,6 +88,7 @@ C:\Users\Igor\Documents\GitHub\StarKampf\Game2\obj\x86\Debug\StarKampf.csprojRes
 D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.exe
 D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.pdb
 D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game1.cs
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Map.cs
 D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game2.exe
 D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game2.pdb
 D:\FPM\StarKampf\Game2\bin\Windows\Debug\Lidgren.Network.dll
