@@ -29,7 +29,8 @@ namespace Game2
         }
         private int damage;
         private int Countdown;
-        public override string GetUnitProperties
+
+        public override string GetUnitProperties // Кажется лишний код
         {
             get
             {
@@ -37,6 +38,7 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
+
         public override void Act(double Interval)
         {
             base.Act(Interval);

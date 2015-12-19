@@ -62,19 +62,17 @@ namespace Game2
             conMan = new ConnectionManager();
             VecUnits = new List<BaseUnit>();
             sprite = new SpriteBatch(GraphicsDevice);
+            map = new Map();
+            Inter = new Interface(GraphicsDevice, 0, map);
+            sw = new Stopwatch();
         }
 
         public void Initialize()
         {
           
-            sw = new Stopwatch();
-            //
-            //
             
-            //ini timer 
-            map = new Map();
-            Inter = new Interface(GraphicsDevice, 0, map); // Обязательно исправить когда будет корректная инициализация сервером.
             conMan.Initialize(VecUnits, map);
+            BaseUnit.InitializeMap(map, conMan);
 
         }
 
@@ -85,6 +83,8 @@ namespace Game2
             sw.Reset(); // reset the timer (change current time to 0)
             sw.Start();
             conMan.Update(Inter.Update(VecUnits));
+
+            int x = GraphicsDevice.Viewport.X;
            
            
 
@@ -96,13 +96,11 @@ namespace Game2
 
         public void Draw()
         {
-            //map.DrawMap(GraphicsDevice, Inter.camera);
 
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
             
-            // Who will engage with Interface class?
-            // You shoud draw it there;
-            DrawMap();
+ 
+            DrawMap(); // Should be map.Draw(); // Otherside, it's not so important. 
             DrawUnits();
             Inter.Draw();
         }
@@ -186,11 +184,15 @@ namespace Game2
         }
 
 
-        public void LogMsg(string message)
+        
+    }
+
+    class Log
+    {
+        public void Write(string message)
         {
             File.AppendAllText("log.txt", message);
         }
     }
-
 
 }

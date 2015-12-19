@@ -14,6 +14,7 @@ namespace Game2
     class BaseUnit
     {
         protected static Map map;
+        protected static ConnectionManager conMan;
 
         protected int health;
         public int MaxHealth { get { return _MaxHealth; } }
@@ -32,9 +33,11 @@ namespace Game2
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
 
-       public static void InitializeMap(Map _map)
+       public static void InitializeMap(Map _map, ConnectionManager _conMan)
         {
             map = _map;
+            conMan = _conMan;
+
         }
 
         protected void SetTarget(BaseUnit unit)

@@ -16,15 +16,27 @@ namespace Game2
         private bool IsBuild;
         private int BuildID;
 
-        private Dictionary<int, int> DictOfCreatingUnit;
-        private Dictionary<int, int> DictOfCreatingUpgrade;
+        private static Dictionary<int, Dictionary<int, int>> CreatingUnits;
 
         private int FlagX; // Point, where unit would be located after creating 
         private int FlagY;
+
         public override void SetBuild(int ID)
         {
             QueueOfBuildUnits.Add(ID);
         }
+
+        static Building()
+        {
+
+            int[] arr = System.IO.File.ReadAllText("Units//timeofbuilding.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+            for (int i = 0; i != arr.Count()-1; i += 3)
+            {
+                CreatingUnits[arr[i]][arr[i + 1]] = arr[i + 2];
+            }
+
+        }
+
         private void Build(List<BaseUnit> VecUnits)
         {
             
@@ -34,38 +46,23 @@ namespace Game2
                 {
                     BuildID = QueueOfBuildUnits.First();
                     QueueOfBuildUnits.RemoveAt(0);
-                    FullTime = DictOfCreatingUnit[BuildID];
+                    FullTime = CreatingUnits[this.ID][BuildID];
                     timeOfBuildCurUnit.Reset();
                 }
             }
+
             else
             {
-                if (timeOfBuildCurUnit.ElapsedMilliseconds/1000 > FullTime)
+                if (timeOfBuildCurUnit.ElapsedMilliseconds/1000 > FullTime) // Если время постройки вышло отправляем запрос на инициализацию
                 {
-                   
-
-                    if (0 <= ID && ID < 10) // Fighter 
-                    {
-                        
-                    }
-
-                    else if (10 <= ID && ID < 20)//Builder
-                    {
-
-                    }
-
-                    else if (20 <= ID && ID < 30)//Support
-                    {
-
-                    }
-
+                    conMan.SendMsgIniUnit(BuildID, FlagX, FlagY);
                     BuildID = -1;  
                 }
             }
             
         }
-        public Building(int ID, int x, int y, int side, int IN, string name, int MaxHealth, 
-                        Dictionary<int, int> DictOfCreatingUnit, Dictionary<int, int> DictOfCreatingUpgrade)
+
+        public Building(int ID, int x, int y, int side, int IN, string name, int MaxHealth)
         {
             this.ID = ID;
             this.x = x;
@@ -75,8 +72,6 @@ namespace Game2
             this.name = name;
             this._MaxHealth = MaxHealth;
             this.health = MaxHealth;
-            this.DictOfCreatingUnit = DictOfCreatingUnit;
-            this.DictOfCreatingUpgrade = DictOfCreatingUpgrade;
 
             this.BuildID = -1;
         }

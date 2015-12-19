@@ -41,7 +41,7 @@ namespace Game2
             client = new NetClient(config);
             client.Start();
             client.Connect(host: "127.0.0.1", port: 12345);
-            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never
+            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never // это типа комментарий к комментарию, ну вы поняли да?)
             outMsg = client.CreateMessage();
             unitsManager = new UnitsManager(VecUnits, map);
             return side;
@@ -85,7 +85,7 @@ namespace Game2
             }
         }
 
-        private void SendMsgIniUnit(int ID, int x, int y)
+        public void SendMsgIniUnit(int ID, int x, int y)
         {
 
             string IncomingCommand = ((int)Commands.iniUnit).ToString() + " " +
