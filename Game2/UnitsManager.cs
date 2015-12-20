@@ -12,40 +12,38 @@ namespace Game2
 {
      class UnitsManager
     {
-        
+
         private List<BaseUnit> VecUnits;
 
         public UnitsManager(List<BaseUnit> _VecUnits, Map map)
         {
             VecUnits = _VecUnits;
             VecUnits.Capacity = 128;
+            BaseUnit.InitializeMap(map);
         }
 
 
+        enum Commands
+        {
+            iniUnit = 0,
+            moveUnit = 1
+        }
 
+        enum Units
+        {
+            unicorn = 0
+        }
 
         public void IniUnit(int[] IntCommands)
         {
-            int[] arr;
             switch ((Units)IntCommands[1])
             {
-                case Units.centr:
-                     arr = System.IO.File.ReadAllText("Units/centr.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-
-                    VecUnits.Add(new Building(IntCommands[1],
-                                             IntCommands[2],
-                                             IntCommands[3],
-                                             IntCommands[4],
-                                             IntCommands[5],
-                                             arr[0]));
-                    break;
-
                 case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file
                     // as soon as possible
 
-                    arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+                    int[] arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
                     VecUnits.Add(new Fighter(IntCommands[1],
                                              IntCommands[2],
@@ -55,20 +53,7 @@ namespace Game2
                                              "unicorn", arr[0], arr[1], arr[2], arr[3]));
 
                     break;
-                 case Units.afro:
-                    arr = System.IO.File.ReadAllText("Units/afro.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
-                    VecUnits.Add(new Fighter(IntCommands[1],
-                                             IntCommands[2],
-                                             IntCommands[3],
-                                             IntCommands[4],
-                                             IntCommands[5],
-                                             "afro", arr[0], arr[1], arr[2], arr[3]));
-
-
-                    break;
-
-                
 
                 default:
                     break;

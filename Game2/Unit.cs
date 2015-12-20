@@ -14,8 +14,8 @@ namespace Game2
     class BaseUnit
     {
         protected static Map map;
-        protected static ConnectionManager conMan;
-
+        private int textureWight = 75, textureHeight = 50;
+        public Rectangle unitBound { get { return new Rectangle((int)this.X - textureWight / 2, (int)this.Y - textureHeight / 2, textureWight, textureHeight); ;} } // unit bounding box, used for detecting collision
         protected int health;
         public int MaxHealth { get { return _MaxHealth; } }
         protected int _MaxHealth;
@@ -33,17 +33,20 @@ namespace Game2
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
 
-       public static void InitializeMap(Map _map, ConnectionManager _conMan)
+        public static void InitializeMap(Map _map)
         {
             map = _map;
-            conMan = _conMan;
-
         }
 
         protected void SetTarget(BaseUnit unit)
         { 
              
-        } 
+        }
+
+        public void takeDamage(int damage)
+        {
+            this.health -= damage;
+        }
 
         public string Name { get { return name; } }
         public int Health { get { return health; } }
@@ -73,6 +76,12 @@ namespace Game2
         {
 
         }
+
+        public virtual string Attack()
+        {
+            return null;
+        }
+
 
     }//private constructor
 

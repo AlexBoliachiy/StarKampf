@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 //Осторожно, некоторые строки в сервере и в клиенте отличаются
 namespace Game2
 {
@@ -29,8 +30,9 @@ namespace Game2
         }
         private int damage;
         private int Countdown;
-
-        public override string GetUnitProperties // Кажется лишний код
+        private bool isAttacking;
+        private Stopwatch sw;
+        public override string GetUnitProperties
         {
             get
             {
@@ -38,10 +40,20 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
-
         public override void Act(double Interval)
         {
             base.Act(Interval);
         }
+
+        public override string Attack()
+        {
+            isAttacking = true;
+            this.isMoving = false;
+
+            rotateAngle = (float)Math.Atan2(Dy, Dx) - angle;
+
+            return null;
+        }
+
     }
 }

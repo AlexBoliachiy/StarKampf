@@ -85,12 +85,12 @@ namespace Game2
 
                 //If we finished, end will have a parent, otherwise not
                 Path = new List<Node>();
-                Current = Grid[end.X, end.Y]; //Current = end desination node // Вот тут выскакивает exception out of range если клик слишком далеко от юнита;
+                Current = Grid[end.X, end.Y]; //Current = end desination node
                 Path.Add(Current);
                 while (Current.Parent != null) //Won't run if end doesn't have a parent
                 {
                     Path.Add(Current.Parent);
-                    Current = Current.Parent; 
+                    Current = Current.Parent;
                 }
 
                 //Path.Reverse();
