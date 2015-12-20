@@ -15,29 +15,65 @@ namespace Game2
         private int FullTime;
         private bool IsBuild;
         private int BuildID;
+        private static List<BaseUnit> VecUnits;
 
-        private static Dictionary<int, Dictionary<int, int>> CreatingUnits;
+        public static Dictionary<int, Dictionary<int, int>> CreatingUnits;
 
         private int FlagX; // Point, where unit would be located after creating 
         private int FlagY;
+        public static void Initialize(ref List<BaseUnit> _VecUnits)
+        {
+            VecUnits = _VecUnits;
+        }
 
         public override void SetBuild(int ID)
         {
             QueueOfBuildUnits.Add(ID);
         }
+        public Building(int ID, int x, int y, int side, int IN, int MaxHealth)
+        {
+            timeOfBuildCurUnit = new Stopwatch();
+            QueueOfBuildUnits = new List<int>();
+            this.ID = ID;
+            this.IN = IN;
+            this._MaxHealth = MaxHealth;
+            this.x = x;
+            this.y = y;
+            this.FlagX = (int)X - 100;
+            this.FlagY = (int)Y + 100;
+            BuildID = -1;
+
+
+        }
 
         static Building()
         {
-
-            int[] arr = System.IO.File.ReadAllText("Units//timeofbuilding.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
-            for (int i = 0; i != arr.Count()-1; i += 3)
+            string str = System.IO.File.ReadAllText("Units//centrb.txt");
+            CreatingUnits = new Dictionary<int, Dictionary<int, int>>();
+            string[] arr2 = str.Split(new char[] { '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            int[] arr = new int[arr2.Count()];
+            for (int i=0; i < arr2.Count(); i++)
             {
-                CreatingUnits[arr[i]][arr[i + 1]] = arr[i + 2];
+                arr[i] = int.Parse(arr2[i]);
+            }
+
+            for (int i = 0; i != arr.Count(); i += 3)
+            {
+                if (!CreatingUnits.ContainsKey(arr[i]))
+                {
+                    CreatingUnits.Add(arr[i], new Dictionary<int, int>());
+                    CreatingUnits[arr[i]].Add(arr[i + 1], arr[i + 2]);
+                }
+                else
+                    CreatingUnits[arr[i]].Add(arr[i + 1], arr[i + 2]);
+
+
+                //CreatingUnits[arr[i]][arr[i + 1]] = arr[i + 2];
             }
 
         }
 
-        private void Build(List<BaseUnit> VecUnits)
+        private void Build()
         {
             
             if (BuildID == -1) 
@@ -47,7 +83,7 @@ namespace Game2
                     BuildID = QueueOfBuildUnits.First();
                     QueueOfBuildUnits.RemoveAt(0);
                     FullTime = CreatingUnits[this.ID][BuildID];
-                    timeOfBuildCurUnit.Reset();
+                    timeOfBuildCurUnit.Start();
                 }
             }
 
@@ -56,6 +92,7 @@ namespace Game2
                 if (timeOfBuildCurUnit.ElapsedMilliseconds/1000 > FullTime) // Если время постройки вышло отправляем запрос на инициализацию
                 {
                     conMan.SendMsgIniUnit(BuildID, FlagX, FlagY);
+                    timeOfBuildCurUnit.Reset();
                     BuildID = -1;  
                 }
             }
@@ -74,6 +111,11 @@ namespace Game2
             this.health = MaxHealth;
 
             this.BuildID = -1;
+        }
+
+        public override void Act(double Interval)
+        {
+            Build();
         }
     }
 }

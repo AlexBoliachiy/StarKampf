@@ -32,7 +32,8 @@ namespace Game2
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player(GraphicsDevice);
+            SpriteFont font = Content.Load<SpriteFont>("font");
+            player = new Player(GraphicsDevice,font );
             player.Initialize();
             base.Initialize();
             this.IsMouseVisible = true;
@@ -44,18 +45,22 @@ namespace Game2
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            
             spriteBatch = new SpriteBatch(GraphicsDevice);
             string[] PathToTextures;
             PathToTextures = System.IO.File.ReadAllText("Content\\Textures\\Textures.txt").Split('\n');
-            Texture2D [] allTextures = new Texture2D[PathToTextures.Length];
+            Texture2D [] allTextures = new Texture2D[128]; // так надо
+
             for (int i = 0; i < PathToTextures.Length; i++)
             {
-                allTextures[i] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i]);
+                
+                allTextures[int.Parse(PathToTextures[i].Split(' ')[1])] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i].Split(' ')[0]);
+
             }
             
             Texture2D wallTexture = Content.Load<Texture2D>("Textures\\wall.png");
             player.IniTextures(allTextures, wallTexture);
+            player.Inter.Initialize(allTextures);
             // TODO: use this.Content to load your game content here
         }
 

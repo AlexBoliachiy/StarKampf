@@ -85,3 +85,5 @@ C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.XInput.
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.RawInput.xml
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\obj\x86\Debug\StarKampf.csprojResolveAssemblyReference.cache
+E:\sc\StarKampf\Game2\bin\Windows\Debug\Content\font.xnb
+E:\sc\StarKampf\Game2\bin\Windows\Debug\Textures\centr.xnb

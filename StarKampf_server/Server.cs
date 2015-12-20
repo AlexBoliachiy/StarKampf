@@ -18,7 +18,9 @@ namespace StarKampf_server
 
     enum Units
     {
-        unicorn = 0
+        unicorn = 0,
+        afro = 1,
+        centr = 10
     }
 
     class Server
@@ -181,6 +183,23 @@ namespace StarKampf_server
 
                     Console.WriteLine("Ini Unicorn ");
                     break;
+
+                case Units.centr:
+                    arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    UnitsList.Add(new Building(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "centr", arr[0],
+                                                             IN++));
+                    OutStrCmd += "0 " + UnitsList.Last().GetUnitProperties;
+                    break;
+                case Units.afro:
+                    arr = System.IO.File.ReadAllText("Units/afro.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    UnitsList.Add(new Building(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "afro", arr[0],
+                                                             IN++));
+                    OutStrCmd += "0 " + UnitsList.Last().GetUnitProperties;
+                    break;
+
+
                 default:
                     break;
 

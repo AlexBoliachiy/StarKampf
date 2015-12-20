@@ -12,19 +12,22 @@ using System.Diagnostics;
 
 namespace Game2
 {
+    enum Commands
+    {
+        iniUnit = 0,
+        moveUnit = 1
+    }
+
+    enum Units
+    {
+        unicorn = 0,
+        afro = 1,
+        centr = 10
+    }
     class Player
 
     {
-        enum Commands
-        {
-            iniUnit = 0,
-            moveUnit = 1
-        }
-
-        enum Units
-        {
-            unicorn = 0,
-        }
+     
 
         private ConnectionManager conMan;
 
@@ -49,21 +52,22 @@ namespace Game2
         public Map map;
         //
         private double interval;
-        private int[][] IntCommands;
+        private int[][] IntCommands; // не удалять
         bool DG = false;
         private Stopwatch sw;
         private string UnitSItuation = string.Empty; // Тут собираются все взаимодействия между юнитами, картой , потом это отправляется серверу
 
         private List<BaseUnit> VecUnits;
 
-        public Player(GraphicsDevice GraphicsDevice)
+        public Player(GraphicsDevice GraphicsDevice, SpriteFont font)
         {
             this.GraphicsDevice = GraphicsDevice;
             conMan = new ConnectionManager();
             VecUnits = new List<BaseUnit>();
             sprite = new SpriteBatch(GraphicsDevice);
             map = new Map();
-            Inter = new Interface(GraphicsDevice, 0, map);
+
+            Inter = new Interface(GraphicsDevice, 0, map, font, allTextures );
             sw = new Stopwatch();
         }
 
@@ -73,6 +77,7 @@ namespace Game2
             
             conMan.Initialize(VecUnits, map);
             BaseUnit.InitializeMap(map, conMan);
+            Building.Initialize(ref VecUnits);
 
         }
 
@@ -168,7 +173,6 @@ namespace Game2
         {
             BaseUnit movingUnit = FindInList(VecUnits, IntCommands[NumberOfCurCMS][1]);
             movingUnit.SetMoveDest(IntCommands[NumberOfCurCMS][2], IntCommands[NumberOfCurCMS][3]);
-
         }
 
         private BaseUnit FindInList(List<BaseUnit> VecUnits, int IN)
@@ -179,8 +183,9 @@ namespace Game2
                     return VecUnits[i];
             }
             return null;
-
         }
+
+
 
 
         

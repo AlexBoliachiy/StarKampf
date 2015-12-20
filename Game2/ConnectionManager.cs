@@ -9,16 +9,7 @@ using System.Diagnostics;
 
 namespace Game2
 {
-    enum Commands
-    {
-        iniUnit = 0,
-        moveUnit = 1
-    }
-
-    enum Units
-    {
-        unicorn = 0
-    }
+    
 
     class ConnectionManager
     {
@@ -30,7 +21,8 @@ namespace Game2
         private int[][] IntCommands;
 
         private UnitsManager unitsManager;
-
+        private bool ShoudSend;
+        string OutComingCommandAboutIni;
         int side;
 
         private bool DG;
@@ -44,6 +36,7 @@ namespace Game2
             side = 0; //  later somebody need make ini side in moment connecting to the server // later means never // это типа комментарий к комментарию, ну вы поняли да?)
             outMsg = client.CreateMessage();
             unitsManager = new UnitsManager(VecUnits, map);
+            OutComingCommandAboutIni = string.Empty;
             return side;
         }
 
@@ -72,10 +65,11 @@ namespace Game2
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
                     SendMsgIniUnit(0, 368, 368);
+                    SendMsgIniUnit(10, 500, 500);
                     DG = true;
                 }
-                
-                
+
+
                 //
                 client.Recycle(inMsg);
             }
@@ -83,16 +77,26 @@ namespace Game2
             {
                 SendFormedRequest(ActionCommands);
             }
+            if (ShoudSend == true)
+            {
+                if (OutComingCommandAboutIni == string.Empty || OutComingCommandAboutIni == null)
+                    return;
+                outMsg.Write(OutComingCommandAboutIni);
+                ShoudSend = false;
+                OutComingCommandAboutIni = String.Empty;
+                client.SendMessage(outMsg, NetDeliveryMethod.ReliableUnordered);
+
+            }
         }
 
-        public void SendMsgIniUnit(int ID, int x, int y)
+        public int SendMsgIniUnit(int ID, int x, int y)
         {
 
-            string IncomingCommand = ((int)Commands.iniUnit).ToString() + " " +
-                                       ID.ToString() + " " + x.ToString() + " " + y.ToString() + " " + side.ToString();
-
-            outMsg.Write(IncomingCommand);
-            client.SendMessage(outMsg, NetDeliveryMethod.ReliableOrdered);
+        
+            OutComingCommandAboutIni += ((int)Commands.iniUnit).ToString() + " " +
+                                       ID.ToString() + " " + x.ToString() + " " + y.ToString() + " " + side.ToString()+ " \n";
+            ShoudSend = true;
+            return 1;
         }
 
         private void SendFormedRequest(string request)
@@ -100,7 +104,7 @@ namespace Game2
             try
             {
                 outMsg.Write(request);
-                client.SendMessage(outMsg, NetDeliveryMethod.ReliableOrdered);
+                client.SendMessage(outMsg, NetDeliveryMethod.ReliableUnordered);
             }
             catch
             {
@@ -142,7 +146,7 @@ namespace Game2
         private void AnalyzeCommands()
         {
             //Просто пробегаем по массиву и выполняем комманды
-            for (int i = 0; i < IntCommands.Count() - 1; i++)
+            for (int i = 0; i < IntCommands.Count(); i++)
             {
                 if (IntCommands[i].Count() == 0)
                     return;
