@@ -72,7 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="timeofbuilding.txt" />
     <Content Include="Content\map.txt" />
     <Content Include="Icon.ico" />
   </ItemGroup>

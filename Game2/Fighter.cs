@@ -29,8 +29,8 @@ namespace Game2
         }
         private int damage;
         private int Countdown;
-
-        public override string GetUnitProperties // Кажется лишний код
+        private bool isAttacking;
+        public override string GetUnitProperties
         {
             get
             {
@@ -38,10 +38,20 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
-
         public override void Act(double Interval)
         {
             base.Act(Interval);
+        }
+
+        private int AttackUnit(BaseUnit enemy)
+        {
+            enemy.takeDamage(damage);
+            return 0;
+        }
+        public override string Attack()
+        {
+            this.Speed = 0;
+            return null;
         }
     }
 }

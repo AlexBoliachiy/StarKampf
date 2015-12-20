@@ -29,11 +29,6 @@ namespace Game2
         private ConnectionManager conMan;
 
         private const double timeDivider = 30;
-     
-        private Rectangle wallBound;
-
-        private KeyboardState keyboardState; // for testing
-
         //
         private GraphicsDevice GraphicsDevice;
 
@@ -62,20 +57,22 @@ namespace Game2
             conMan = new ConnectionManager();
             VecUnits = new List<BaseUnit>();
             sprite = new SpriteBatch(GraphicsDevice);
-            map = new Map();
-            Inter = new Interface(GraphicsDevice, 0, map);
-            sw = new Stopwatch();
         }
 
         public void Initialize()
         {
           
+            sw = new Stopwatch();
+            //
+            //
+            
+            //ini timer 
+            map = new Map(sprite);
+            Inter = new Interface(GraphicsDevice, 0, map); // Обязательно исправить когда будет корректная инициализация сервером.
             
             conMan.Initialize(VecUnits, map);
-            BaseUnit.InitializeMap(map, conMan);
 
         }
-
 
         public void Update()
         {
@@ -83,8 +80,6 @@ namespace Game2
             sw.Reset(); // reset the timer (change current time to 0)
             sw.Start();
             conMan.Update(Inter.Update(VecUnits));
-
-            int x = GraphicsDevice.Viewport.X;
            
            
 
@@ -96,16 +91,16 @@ namespace Game2
 
         public void Draw()
         {
+            //map.DrawMap(GraphicsDevice, Inter.camera);
 
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
             
- 
-            DrawMap(); // Should be map.Draw(); // Otherside, it's not so important. 
+            // Who will engage with Interface class?
+            // You shoud draw it there;
+            map.DrawMap(wallTexture, Inter);
             DrawUnits();
             Inter.Draw();
         }
-
-
 
         private int DrawUnits()
         {
@@ -125,33 +120,7 @@ namespace Game2
                 sprite.Draw(allTextures[id], new Vector2((int)VecUnits[i].X, (int)VecUnits[i].Y),
                     null, Color.White, VecUnits[i].Angle, spriteOrigin, 1f, SpriteEffects.None, 0f);
             }
-            sprite.End();
-
-            
-            return 0;
-        }
-
-        private int DrawMap()
-        {
-            sprite.Begin(SpriteSortMode.BackToFront,
-                                   BlendState.AlphaBlend,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   Inter.camera.GetTransformation(GraphicsDevice));
-            for (int i = 0; i < map.width; i++)
-            {
-                for (int j = 0; j < map.height; j++)
-                {
-                    if (map[i, j] == 1) // Вынести все это дерьмо в метод карты. То есть должно быть map.draw();
-                    {
-                        Rectangle tmp = new Rectangle(i * map.tileWidth, j * map.tileHeight, map.tileWidth, map.tileHeight);
-                        sprite.Draw(wallTexture, tmp, Color.White);
-                    }
-                }
-            }
-            sprite.End();
+            sprite.End();            
             return 0;
         }
 
@@ -160,9 +129,6 @@ namespace Game2
             allTextures = texture;
             this.wallTexture = wallTexture;
         }
-
-       
-       
 
         private void MoveUnit(int NumberOfCurCMS)
         {
@@ -183,15 +149,11 @@ namespace Game2
         }
 
 
-        
-    }
-
-    class Log
-    {
-        public void Write(string message)
+        public void LogMsg(string message)
         {
             File.AppendAllText("log.txt", message);
         }
     }
+
 
 }

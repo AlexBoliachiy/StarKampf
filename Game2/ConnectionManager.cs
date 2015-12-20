@@ -33,7 +33,7 @@ namespace Game2
 
         int side;
 
-        private bool DG;
+        private bool DG, DG2;
 
         public int Initialize(List<BaseUnit> VecUnits, Map map)
         {
@@ -41,7 +41,7 @@ namespace Game2
             client = new NetClient(config);
             client.Start();
             client.Connect(host: "127.0.0.1", port: 12345);
-            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never // это типа комментарий к комментарию, ну вы поняли да?)
+            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never
             outMsg = client.CreateMessage();
             unitsManager = new UnitsManager(VecUnits, map);
             return side;
@@ -69,11 +69,17 @@ namespace Game2
                         break;
 
                 }
+                if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == true && DG2 == false)
+                {
+                    SendMsgIniUnit(0, 512, 512);
+                    DG2 = true;
+                }
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && DG == false)// ini there units per once
                 {
                     SendMsgIniUnit(0, 368, 368);
                     DG = true;
                 }
+                
                 
                 
                 //
@@ -85,7 +91,7 @@ namespace Game2
             }
         }
 
-        public void SendMsgIniUnit(int ID, int x, int y)
+        private void SendMsgIniUnit(int ID, int x, int y)
         {
 
             string IncomingCommand = ((int)Commands.iniUnit).ToString() + " " +

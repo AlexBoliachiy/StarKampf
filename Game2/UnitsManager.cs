@@ -12,17 +12,27 @@ namespace Game2
 {
      class UnitsManager
     {
-        
+
         private List<BaseUnit> VecUnits;
 
         public UnitsManager(List<BaseUnit> _VecUnits, Map map)
         {
             VecUnits = _VecUnits;
             VecUnits.Capacity = 128;
+            BaseUnit.InitializeMap(map);
         }
 
 
+        enum Commands
+        {
+            iniUnit = 0,
+            moveUnit = 1
+        }
 
+        enum Units
+        {
+            unicorn = 0
+        }
 
         public void IniUnit(int[] IntCommands)
         {
