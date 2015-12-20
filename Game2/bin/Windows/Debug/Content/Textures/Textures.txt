@@ -1,3 +1,1 @@
-unicorn.png 0
-centr 10
-afro 1
+unicorn.png
