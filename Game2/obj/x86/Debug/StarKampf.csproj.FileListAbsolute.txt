@@ -87,3 +87,33 @@ C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\obj\x86\Debug\StarKampf.csprojResolveAssemblyReference.cache
 D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.exe
 D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.pdb
+<<<<<<< HEAD
+=======
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game1.cs
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Map.cs
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game2.exe
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Game2.pdb
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Lidgren.Network.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\MonoGame.Framework.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.XAudio2.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D11.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.DXGI.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct2D1.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.XInput.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.RawInput.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D9.dll
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\Lidgren.Network.pdb
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\MonoGame.Framework.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.XAudio2.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D11.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.DXGI.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct2D1.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.XInput.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.RawInput.xml
+D:\FPM\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D9.xml
+D:\FPM\StarKampf\Game2\obj\x86\Debug\StarKampf.csprojResolveAssemblyReference.cache
+>>>>>>> origin/Third_Law
