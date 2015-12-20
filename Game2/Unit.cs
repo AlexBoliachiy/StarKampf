@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game2
 {
@@ -10,8 +13,12 @@ namespace Game2
     */
     class BaseUnit
     {
+        protected static Map map;
+        protected static ConnectionManager conMan;
+
         protected int health;
-        protected int MaxHealth;
+        public int MaxHealth { get { return _MaxHealth; } }
+        protected int _MaxHealth;
         protected double x, y;
         public double X { get { return x; } }
         public double Y { get { return y; } }
@@ -25,12 +32,21 @@ namespace Game2
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
+
+       public static void InitializeMap(Map _map, ConnectionManager _conMan)
+        {
+            map = _map;
+            conMan = _conMan;
+
+        }
+
         protected void SetTarget(BaseUnit unit)
         { 
              
         } 
 
         public string Name { get { return name; } }
+        public int Health { get { return health; } }
 
         public void Draw()
         {
@@ -46,9 +62,14 @@ namespace Game2
         {
 
         }
+
         public virtual string GetUnitProperties { get { return string.Empty; } set { ;} }
 
         public virtual void SetMoveDest(int x, int y)
+        {
+
+        }
+        public virtual void SetBuild(int ID)
         {
 
         }

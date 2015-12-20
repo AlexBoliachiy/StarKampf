@@ -18,7 +18,9 @@ namespace StarKampf_server
 
     enum Units
     {
-        unicorn = 0
+        unicorn = 0,
+        afro = 1,
+        centr = 10
     }
 
     class Server
@@ -37,6 +39,7 @@ namespace StarKampf_server
         
 
         private static int IN; //value that determined units id, identifical number
+        // 1 0 0 0 0
 
         public Server()
         {
@@ -108,6 +111,8 @@ namespace StarKampf_server
             {
                 foreach (string A in StrCommand.First().Split('\n'))
                 {
+                    if (A == null || A == string.Empty)
+                        break;
                     ArrOfCms = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                    .Select(n => int.Parse(n))
                    .ToArray();
@@ -160,14 +165,10 @@ namespace StarKampf_server
             /*Сначала инициализируем юнит на сервере.
             * Затем добавляем в строку комманд, которые исполняются на клиенте 
             * что бы они тоже инициализировали у себя юнит
-            * Возможно даже не нужно инициализировать на сервере юнит, но пусть пока будет.
-            * Нет, нужно, и возможно , нужно даже хранить команды. Ведь если кто-то вдруг ненадолго ливнет, ему потом придется отсылать
-            * Все те команды, что он провтыкал. Короче этим буду уже не я заниматься.
             */
             int[] arr;
             switch ((Units)ArrOfCms[1])
             {
-
                 case Units.unicorn:
                     //Temporary there is characteristic(???)  reading from .txt file.
                     // Someone should make the same , but from .db file
@@ -182,6 +183,23 @@ namespace StarKampf_server
 
                     Console.WriteLine("Ini Unicorn ");
                     break;
+
+                case Units.centr:
+                    arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    UnitsList.Add(new Building(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "centr", arr[0],
+                                                             IN++));
+                    OutStrCmd += "0 " + UnitsList.Last().GetUnitProperties;
+                    break;
+                case Units.afro:
+                    arr = System.IO.File.ReadAllText("Units/afro.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    UnitsList.Add(new Building(ArrOfCms[1], ArrOfCms[2], ArrOfCms[3], ArrOfCms[4], "afro", arr[0],
+                                                             IN++));
+                    OutStrCmd += "0 " + UnitsList.Last().GetUnitProperties;
+                    break;
+
+
                 default:
                     break;
 
@@ -219,7 +237,7 @@ namespace StarKampf_server
         }
         public void LogMsg(string message)
         {
-            File.AppendAllText("serverlog.txt", message);
+         //   File.AppendAllText("serverlog.txt", message);
         }
 
     }

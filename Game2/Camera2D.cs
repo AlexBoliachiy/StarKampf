@@ -13,9 +13,9 @@ namespace Game2
 
         public Camera2D()
         {
-            _zoom = 1.0f;
+            _zoom = .5f;
             _rotation = 0.0f;
-            _pos = new Vector2(365, 250);
+            _pos = new Vector2(1280/2,720/2);
         }
 
         public float Zoom

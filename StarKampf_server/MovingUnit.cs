@@ -20,7 +20,7 @@ namespace StarKampf_server
         }
 
         protected float Omega { get { return this.Speed / 200.0f; } }
-
+         
         public override void SetMoveDest(int x, int y)
         {
             this.Dx = x - this.x;// Берем относительные координаты
@@ -54,6 +54,7 @@ namespace StarKampf_server
                 isRotating = false;
                 return;
             }
+
         }
 
         protected void move(double Interval)

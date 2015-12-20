@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 //Осторожно, некоторые строки в сервере и в клиенте отличаются
 namespace Game2
 {
@@ -18,7 +21,7 @@ namespace Game2
             this.damage = damage;
             this.Countdown = countdown;
             this.side = side;
-            this.MaxHealth = MaxHealth;
+            this._MaxHealth = MaxHealth;
             this.angle = 0;
             health = MaxHealth;
             this.IN = IN;
@@ -26,7 +29,8 @@ namespace Game2
         }
         private int damage;
         private int Countdown;
-        public override string GetUnitProperties
+
+        public override string GetUnitProperties // Кажется лишний код
         {
             get
             {
@@ -34,6 +38,7 @@ namespace Game2
                        + side.ToString() + " " + IN.ToString() + "\n";
             }
         }
+
         public override void Act(double Interval)
         {
             base.Act(Interval);
