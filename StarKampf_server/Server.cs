@@ -50,7 +50,7 @@ namespace StarKampf_server
 
         public Server()
         {
-            config = new NetPeerConfiguration("StarKampf") { Port = 12345 };
+            config = new NetPeerConfiguration("StarKampf") { Port = 45297 };
             server = new NetServer(config);
             server.Start();
             outMsg = server.CreateMessage();
@@ -126,7 +126,7 @@ namespace StarKampf_server
             * by switching
             */
             //Обрабатываем первый элемент.
-            if (TimerWait.ElapsedMilliseconds / 1000 < 10 && DG ==true)
+            if (TimerWait.ElapsedMilliseconds / 1000 < 5 && DG ==true)
                 return 0;
 
             while (StrCommand.Count > 0)
@@ -273,15 +273,32 @@ namespace StarKampf_server
             LogMsg("Send msg: " + OutStrCmd);
             Console.WriteLine(server.Connections.Count);
             int i = 0;
-            foreach (var A in server.Connections)
+       /*     foreach (var A in server.Connections)
             {
                 i++;
-                
-                    if (A != null)
-                        server.SendMessage(outMsg, A, NetDeliveryMethod.ReliableOrdered);
+                try
+                {
+
+                    outMsg.Write(OutStrCmd);
+                    server.SendMessage(outMsg, A, NetDeliveryMethod.ReliableOrdered);
+                    server.SendMessage()
                     Console.WriteLine("Send " + i);
-                
-                
+                }
+
+                catch
+                {
+                    Console.WriteLine("CATHCHED");
+                }
+                System.Threading.Thread.Sleep(50);
+            }*/
+
+            try
+            {
+                server.SendMessage(outMsg, server.Connections, NetDeliveryMethod.ReliableOrdered,1);
+            }
+            catch
+            {
+
             }
         }
         public void LogMsg(string message)
