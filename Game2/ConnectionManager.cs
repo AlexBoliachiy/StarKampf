@@ -33,7 +33,6 @@ namespace Game2
             client = new NetClient(config);
             client.Start();
             client.Connect(host: "127.0.0.1", port: 12345);
-            side = 0; //  later somebody need make ini side in moment connecting to the server // later means never // это типа комментарий к комментарию, ну вы поняли да?)
             outMsg = client.CreateMessage();
             unitsManager = new UnitsManager(VecUnits, map);
             OutComingCommandAboutIni = string.Empty;
@@ -52,6 +51,7 @@ namespace Game2
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
+
                         // handle connection status messages
 
 
@@ -160,6 +160,10 @@ namespace Game2
                     case Commands.moveUnit://1 0 100 100 означает переместить юнит с ИН 0 в точку х = 100 у = 100;
                         unitsManager.MoveUnit(IntCommands[i]);
                         break;
+                    case Commands.iniSide:
+                        side = IntCommands[i][1];
+                        LogMsg("THIS SIDE +@" + side.ToString() + "@\n");
+                        break;
 
                     default:
                         break;
@@ -169,7 +173,7 @@ namespace Game2
 
         public void LogMsg(string message)
         {
-            // File.AppendAllText("log.txt", message);
+             File.AppendAllText("log.txt", message);
         }
 
 

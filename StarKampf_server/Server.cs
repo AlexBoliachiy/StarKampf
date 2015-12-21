@@ -13,7 +13,8 @@ namespace StarKampf_server
     enum Commands
     {
         iniUnit = 0,
-        moveUnit = 1
+        moveUnit = 1,
+        iniSide = 228
     }
 
     enum Units
@@ -37,7 +38,7 @@ namespace StarKampf_server
         private List<string> StrCommand;
         private string OutStrCmd; // string with commands, that sending to client and there execute
         private List<BaseUnit> UnitsList; // array of all units on the map
-
+        private int side = 0;
         Stopwatch sw;//Timer
         
 
@@ -75,7 +76,6 @@ namespace StarKampf_server
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
-
                           if (((NetConnectionStatus)(inMsg.PeekByte())).ToString() != "RespondedConnect" &&
                                ((NetConnectionStatus)(inMsg.PeekByte())).ToString() != "Connected")
                           {
@@ -130,7 +130,11 @@ namespace StarKampf_server
                         case Commands.moveUnit:
                             MoveUnit();
                             break;
-
+                        case Commands.iniSide:
+                            outMsg.Write("228 " + side.ToString());
+                            server.SendMessage(outMsg, server.Connections.Last(), NetDeliveryMethod.ReliableOrdered);
+                            side++;
+                            break;
                         default:
                             break;
                     }

@@ -15,7 +15,9 @@ namespace Game2
     enum Commands
     {
         iniUnit = 0,
-        moveUnit = 1
+        moveUnit = 1,
+        iniSide = 228,
+
     }
 
     enum Units
@@ -50,7 +52,6 @@ namespace Game2
         private SpriteBatch sprite;
         private Vector2 spriteOrigin;// Центр спрайта
 
-        private int side; // определяет сторону игрока .
 
         public Interface Inter;
         public Map map;
