@@ -1,3 +1,6 @@
 unicorn.png 0
 centr 10
 afro 1
+soldier 2
+carrier 11
+buldozer 100

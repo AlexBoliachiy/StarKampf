@@ -29,6 +29,18 @@ namespace Game2
             int[] arr;
             switch ((Units)IntCommands[1])
             {
+
+                case Units.carrier:
+                    arr = System.IO.File.ReadAllText("Units/carrier.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    VecUnits.Add(new Building(IntCommands[1],
+                                             IntCommands[2],
+                                             IntCommands[3],
+                                             IntCommands[4],
+                                             IntCommands[5],
+                                             arr[0]));
+                    break;
+
                 case Units.centr:
                      arr = System.IO.File.ReadAllText("Units/centr.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
@@ -55,7 +67,24 @@ namespace Game2
                                              "unicorn", arr[0], arr[1], arr[2], arr[3]));
 
                     break;
-                 case Units.afro:
+
+                case Units.soldier:
+                    //Temporary there is characteristic(???)  reading from .txt file.
+                    // Someone should make the same , but from .db file
+                    // as soon as possible
+
+                    arr = System.IO.File.ReadAllText("Units/soldier.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    VecUnits.Add(new Fighter(IntCommands[1],
+                                             IntCommands[2],
+                                             IntCommands[3],
+                                             IntCommands[4],
+                                             IntCommands[5],
+                                             "soldier", arr[0], arr[1], arr[2], arr[3]));
+
+                    break;
+
+                case Units.afro:
                     arr = System.IO.File.ReadAllText("Units/afro.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
 
                     VecUnits.Add(new Fighter(IntCommands[1],
@@ -66,6 +95,16 @@ namespace Game2
                                              "afro", arr[0], arr[1], arr[2], arr[3]));
 
 
+                    break;
+                case Units.buldozer:
+                    arr = System.IO.File.ReadAllText("Units/afro.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
+
+                    VecUnits.Add(new Support(IntCommands[1],
+                                             IntCommands[2],
+                                             IntCommands[3],
+                                             IntCommands[4],
+                                             IntCommands[5],
+                                             "buldozer", arr[0], arr[1]));
                     break;
 
                 

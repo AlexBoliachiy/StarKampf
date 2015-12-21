@@ -53,6 +53,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Support.cs" />
     <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,11 @@ namespace Game2
     {
         unicorn = 0,
         afro = 1,
-        centr = 10
+        centr = 10,
+        buldozer = 100,
+        soldier = 2,
+        carrier = 11
+
     }
     class Player
 
