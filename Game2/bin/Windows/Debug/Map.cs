@@ -16,6 +16,7 @@ namespace Game2
 
         private int[,] map;
         public int height, width;
+        private int safezone = 1;
 
         public int this[int i, int j] { get { return map[i, j]; } }
 
@@ -45,7 +46,7 @@ namespace Game2
             this.sprite = sprite;
         }
 
-        public int DrawMap(Texture2D[] wallTexture, Interface inter)
+        public int DrawMap(Texture2D[] wallTexture, Interface inter, Camera2D camera)
         {
             sprite.Begin(SpriteSortMode.BackToFront,
                                    BlendState.AlphaBlend,
@@ -54,9 +55,10 @@ namespace Game2
                                    null,
                                    null,
                                    inter.camera.GetTransformation(sprite.GraphicsDevice));
-            for (int i = 0; i < width; i++)
+
+            for (int i = Math.Max(((int)camera._pos.X - camera.width) / tileWidth - safezone, 0); i < Math.Min(((int)camera._pos.X + camera.width) / tileWidth + safezone, width); i++)
             {
-                for (int j = 0; j < height; j++)
+                for (int j = Math.Max(((int)camera._pos.Y - camera.height) / tileHeight - safezone, 0); j < Math.Min(((int)camera._pos.Y + camera.height) / tileHeight + safezone, height); j++)
                 {
                     if (map[i, j] == 0)
                     {

@@ -110,7 +110,7 @@ namespace Game2
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
 
 
-            map.DrawMap(mapTextures, Inter);
+            map.DrawMap(mapTextures, Inter, Inter.camera);
             DrawUnits();
             Inter.Draw();
         }

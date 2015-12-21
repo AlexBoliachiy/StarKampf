@@ -10,6 +10,8 @@ namespace Game2
         public Matrix _transform; // Matrix Transform
         public Vector2 _pos; // Camera Position
         protected float _rotation; // Camera Rotation
+        public int width = 1280;
+        public int height = 720;
 
         public Camera2D()
         {
