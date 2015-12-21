@@ -114,3 +114,5 @@ D:\FPM\StarKampf-master\Game2\bin\Windows\Debug\SharpDX.Direct2D1.xml
 D:\FPM\StarKampf-master\Game2\bin\Windows\Debug\SharpDX.XInput.xml
 D:\FPM\StarKampf-master\Game2\bin\Windows\Debug\SharpDX.RawInput.xml
 D:\FPM\StarKampf-master\Game2\bin\Windows\Debug\SharpDX.Direct3D9.xml
+D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.exe
+D:\FPM\StarKampf\Game2\obj\x86\Debug\Game2.pdb
