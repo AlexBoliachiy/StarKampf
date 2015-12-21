@@ -78,6 +78,12 @@ namespace Game2
 
         }
 
+        public virtual string Attack()
+        {
+            return null;
+        }
+
+
     }//private constructor
 
 
