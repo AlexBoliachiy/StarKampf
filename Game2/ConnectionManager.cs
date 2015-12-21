@@ -85,14 +85,11 @@ namespace Game2
                 ShoudSend = false;
                 OutComingCommandAboutIni = String.Empty;
                 client.SendMessage(outMsg, NetDeliveryMethod.ReliableUnordered);
-
             }
         }
 
         public int SendMsgIniUnit(int ID, int x, int y)
         {
-
-        
             OutComingCommandAboutIni += ((int)Commands.iniUnit).ToString() + " " +
                                        ID.ToString() + " " + x.ToString() + " " + y.ToString() + " " + side.ToString()+ " \n";
             ShoudSend = true;

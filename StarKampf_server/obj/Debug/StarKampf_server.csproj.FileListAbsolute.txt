@@ -6,3 +6,6 @@ E:\sc\StarKampf\StarKampf_server\bin\Debug\Lidgren.Network.pdb
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.csprojResolveAssemblyReference.cache
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
 E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
+C:\Users\Igor\Desktop\Star\StarKampf_server\bin\Debug\StarKampf_server.exe.config
+C:\Users\Igor\Desktop\Star\StarKampf_server\obj\Debug\StarKampf_server.exe
+C:\Users\Igor\Desktop\Star\StarKampf_server\obj\Debug\StarKampf_server.pdb

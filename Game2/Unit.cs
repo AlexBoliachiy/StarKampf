@@ -15,7 +15,8 @@ namespace Game2
     {
         protected static Map map;
         protected static ConnectionManager conMan;
-
+        private int textureWight = 70, textureHeight = 50;
+        public Rectangle unitBound { get { return new Rectangle((int)this.X - textureWight / 2, (int)this.Y - textureHeight / 2, textureWight, textureHeight); ;} } // unit bounding box, used for detecting collision
         protected int health;
         public int MaxHealth { get { return _MaxHealth; } }
         protected int _MaxHealth;

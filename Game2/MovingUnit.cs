@@ -13,26 +13,31 @@ namespace Game2
     {
         protected int Speed;
         protected double Dx, Dy; // Относительные координаты движения
-        protected double Nx, Ny; // Нормализованый вектор направления
+        protected double Nx, Ny; // Нормализованый вектор направления 
         protected double DestX, DestY;
         protected bool isMoving;
         public bool IsMoving { get { return isMoving; } }
         protected bool isRotating;
         public bool IsRotating { get { return isRotating; } }
-        private Rectangle unitBound; // unit bounding box, used for detecting collision
-        private int textureWight = 70, textureHeight = 50;
         private List<Point> pointList;
         private int wayPoint;
         protected MovingUnit() // Prevent ini any objects this class
         {
         }
 
-        protected float Omega { get { return this.Speed / 200.0f; } }
+        static List<BaseUnit> VecUnits;
+        static List<BaseUnit> movingOnly;
 
+        public static void InitializeUnits(List<BaseUnit> _VecUnits)
+        {
+            VecUnits = _VecUnits;
+        }
+
+
+        protected float Omega { get { return this.Speed / 200.0f; } }
 
         protected bool isCollides() // поиск колизий
         {
-            unitBound = new Rectangle((int)this.X - textureWight / 2, (int)this.Y - textureHeight / 2, textureWight, textureHeight);
             for (int i = 0; i < map.width; i++)
             {
                 for (int j = 0; j < map.height; j++)
@@ -48,6 +53,20 @@ namespace Game2
                 }
             }
             return false;
+        }
+
+        private void countMovinUnits()
+        {
+            if (VecUnits != null)
+            {
+                foreach (BaseUnit unit in VecUnits)
+                {
+                    if (unit is MovingUnit)
+                    {
+                        movingOnly.Add(unit);
+                    }
+                }
+            }
         }
 
         public override void SetMoveDest(int x, int y)
@@ -72,15 +91,17 @@ namespace Game2
             this.Dy = pointList[wayPoint].Y - this.y;//         
             this.Nx = Dx / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)));
             this.Ny = Dy / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)));
-            rotateAngle = (float)Math.Atan2(Dy, Dx) - angle;
 
-            if (Math.Abs(rotateAngle) > Math.PI) rotateAngle = Math.Sign(-rotateAngle) * ((float)Math.PI * 2 - Math.Abs(rotateAngle));
             if (rotateAngle != 0.0f) isRotating = true;// Если смотрим в направлении движения - не разворачиваемся
         }
 
         protected void rotate(double Interval)
         {
             if (isRotating == false) return;
+
+            rotateAngle = (float)Math.Atan2(Dy, Dx) - angle;
+            if (Math.Abs(rotateAngle) > Math.PI) rotateAngle = Math.Sign(-rotateAngle) * ((float)Math.PI * 2 - Math.Abs(rotateAngle));
+
             if (Math.Abs(rotateAngle) > (float)Interval * Omega)
             {
                 angle += Math.Sign(rotateAngle) * (float)Interval * Omega;
@@ -97,7 +118,6 @@ namespace Game2
             }
         }
 
-
         protected void move(double Interval)
         {
             /* Тут ты должен сделать перемещение юнита из точки в которой он находится в точку 
@@ -109,8 +129,9 @@ namespace Game2
             / как минимум три объета: А) пустой спейс, Б) Препятствие (камень, дерево, етс.) В) вода
             */
             if (isMoving == false) return; // Не собрались двигаться - прочь из метода
-            if (IsRotating == true) // Разворот в сторону движения перед самим движением
+            if ((float)Math.Atan2(Dy, Dx) - angle != 0) // Разворот в сторону движения перед самим движением
             {
+                isRotating = true;
                 rotate(Interval);
                 return;
             }
@@ -123,6 +144,18 @@ namespace Game2
                 this.y += Ny * Speed * Interval;
                 Dx -= Nx * Speed * Interval;
                 Dy -= Ny * Speed * Interval;
+                countMovinUnits();
+                if (VecUnits != null)
+                {
+                    foreach (MovingUnit unit in VecUnits)
+                    {
+                        while (!unitBound.Intersects(unit.unitBound))
+                        {
+                            unit.x += ((unit.X - this.X) / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)))) * unit.Speed * Interval;
+                            unit.y = ((unit.Y - this.Y) / Math.Sqrt((Math.Pow(Dx, 2) + Math.Pow(Dy, 2)))) * unit.Speed * Interval;
+                        }
+                    }
+                }
                 if (isCollides())// обработка кол
                 {
                     this.x -= Nx * Speed * Interval;
@@ -173,30 +206,30 @@ namespace Game2
                 {
                     if (!lineOfSight(result[result.Count - 1].X, result[result.Count - 1].Y, list[i].X, list[i].Y))
                     {
-                        if (list[i - 1].X - result[result.Count - 1].X != 0)
-                        {
-                            SignY = Math.Sign(list[i - 1].X - result[result.Count - 1].X) * (int)(map.tileWidth / 2.8f);
-                        }
-                        else
-                        {
-                            if (result1.Count == 0)
-                            {
-                                SignY = -Math.Sign(list[i].X - result[result.Count - 1].X) * (int)(map.tileWidth / 2.8f);
-                            }
-                        }
-                        if (list[i - 1].Y - result[result.Count - 1].Y != 0)
-                        {
-                            SignX = Math.Sign(list[i - 1].Y - result[result.Count - 1].Y) * (int)(map.tileWidth / 2.8f);
-                        }
-                        else
-                        {
-                            if (result1.Count == 0)
-                            {
-                                SignX = -Math.Sign(list[i].Y - result[result.Count - 1].Y) * (int)(map.tileWidth / 2.8f);
-                            }
-                        }
-                        result1.Add(new Point(list[i - 1].X * map.tileWidth - SignY + map.tileWidth / 2
-                            , list[i - 1].Y * map.tileHeight - SignX + map.tileHeight / 2));
+                        //if (list[i - 1].X - result[result.Count - 1].X != 0)
+                        //{
+                        //    SignY = Math.Sign(list[i - 1].X - result[result.Count - 1].X) * (int)(map.tileWidth / 2.8f);
+                        //}
+                        //else
+                        //{
+                        //    if (result1.Count == 0)
+                        //    {
+                        //        SignY = -Math.Sign(list[i].X - result[result.Count - 1].X) * (int)(map.tileWidth / 2.8f);
+                        //    }
+                        //}
+                        //if (list[i - 1].Y - result[result.Count - 1].Y != 0)
+                        //{
+                        //    SignX = Math.Sign(list[i - 1].Y - result[result.Count - 1].Y) * (int)(map.tileWidth / 2.8f);
+                        //}
+                        //else
+                        //{
+                        //    if (result1.Count == 0)
+                        //    {
+                        //        SignX = -Math.Sign(list[i].Y - result[result.Count - 1].Y) * (int)(map.tileWidth / 2.8f);
+                        //    }
+                        //}
+                        result1.Add(new Point(list[i - 1].X * map.tileWidth + map.tileWidth / 2
+                            , list[i - 1].Y * map.tileHeight + map.tileHeight / 2));
                         result.Add(list[i - 1]);
                     }
                 }
@@ -205,7 +238,7 @@ namespace Game2
             return result1;
         }
 
-        bool lineOfSight(int x1, int y1, int x2, int y2) // cheks if we see the target (we cant see through walls)
+        protected bool lineOfSight(int x1, int y1, int x2, int y2) // cheks if we see the target (we cant see through walls)
         {
             int dx = x2 - x1;
             int dy = y2 - y1;
