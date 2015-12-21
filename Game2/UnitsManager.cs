@@ -64,7 +64,7 @@ namespace Game2
                                              IntCommands[3],
                                              IntCommands[4],
                                              IntCommands[5],
-                                             "unicorn", arr[0], arr[1], arr[2], arr[3]));
+                                             "unicorn", arr[0], arr[1], arr[2], arr[3], arr[4]));
 
                     break;
 
@@ -80,7 +80,7 @@ namespace Game2
                                              IntCommands[3],
                                              IntCommands[4],
                                              IntCommands[5],
-                                             "soldier", arr[0], arr[1], arr[2], arr[3]));
+                                             "soldier", arr[0], arr[1], arr[2], arr[3], arr[4]));
 
                     break;
 
@@ -92,7 +92,7 @@ namespace Game2
                                              IntCommands[3],
                                              IntCommands[4],
                                              IntCommands[5],
-                                             "afro", arr[0], arr[1], arr[2], arr[3]));
+                                             "afro", arr[0], arr[1], arr[2], arr[3], arr[4]));
 
 
                     break;
