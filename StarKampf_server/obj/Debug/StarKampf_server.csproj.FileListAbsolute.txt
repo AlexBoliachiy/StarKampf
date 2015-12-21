@@ -9,3 +9,6 @@ E:\sc\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
 D:\FPM\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.exe.config
 D:\FPM\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
 D:\FPM\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\bin\Debug\StarKampf_server.exe.config
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.exe
+C:\Users\Igor\Documents\GitHub\StarKampf\StarKampf_server\obj\Debug\StarKampf_server.pdb
