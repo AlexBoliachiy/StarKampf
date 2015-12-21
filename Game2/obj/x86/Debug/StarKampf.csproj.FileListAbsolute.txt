@@ -90,4 +90,3 @@ C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct2
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.XInput.xml
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.RawInput.xml
 C:\Users\Igor\Documents\GitHub\StarKampf\Game2\bin\Windows\Debug\SharpDX.Direct3D9.xml
-E:\sc\StarKampf\Game2\obj\x86\Debug\StarKampf.csprojResolveAssemblyReference.cache

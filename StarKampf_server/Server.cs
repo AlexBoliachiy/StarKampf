@@ -41,7 +41,9 @@ namespace StarKampf_server
         private List<BaseUnit> UnitsList; // array of all units on the map
         private int side = 0;
         Stopwatch sw;//Timer
-        
+        Stopwatch TimerWait;
+
+        private bool DG = true;
 
         private static int IN; //value that determined units id, identifical number
         // 1 0 0 0 0
@@ -52,13 +54,15 @@ namespace StarKampf_server
             server = new NetServer(config);
             server.Start();
             outMsg = server.CreateMessage();
-
             StrCommand = new List<string>();
             UnitsList = new List<BaseUnit>();
             int[] arr;
             arr = System.IO.File.ReadAllText("Units/unicorn.txt").Split(' ').Select(n => int.Parse(n)).ToArray();
             //ini timer
             sw = new Stopwatch();
+            TimerWait = new Stopwatch();
+            TimerWait.Start();
+
         }
         public void Act()
         { 
@@ -66,13 +70,18 @@ namespace StarKampf_server
             sw.Reset(); // reset the timer (change current time to 0)
             sw.Start();
             OutStrCmd = String.Empty;
-
+            if (TimerWait.ElapsedMilliseconds / 1000 > 10)
+            {
+                AnalyzeMsg();
+                TimerWait.Reset();
+                DG = false;
+            }
             while ((inMsg = server.ReadMessage()) != null)
             {
                 switch (inMsg.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-
+                        
                         AnalyzeMsg();
                         break;
 
@@ -96,9 +105,15 @@ namespace StarKampf_server
         private int AnalyzeMsg()
         {
             //Read from received string numeric commands 
-            string tmp = inMsg.ReadString();
-            StrCommand.Add(tmp);
-            LogMsg("Receive msg: " + tmp);
+            try {
+                string tmp = inMsg.ReadString();
+                StrCommand.Add(tmp);
+                LogMsg("Receive msg: " + tmp);
+            }
+            catch
+            {
+
+            }
             // What is doing there
             /*
             * Server Receives message as sequence of numbers separating by symbol '\n'
@@ -111,6 +126,9 @@ namespace StarKampf_server
             * by switching
             */
             //Обрабатываем первый элемент.
+            if (TimerWait.ElapsedMilliseconds / 1000 < 10 && DG ==true)
+                return 0;
+
             while (StrCommand.Count > 0)
             {
                 foreach (string A in StrCommand.First().Split('\n'))
@@ -120,8 +138,7 @@ namespace StarKampf_server
                     ArrOfCms = A.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                    .Select(n => int.Parse(n))
                    .ToArray();
-                    if (ArrOfCms.Count() == 0)
-                        continue;
+                    
                     switch ((Commands)ArrOfCms[0])
                     {
                         case Commands.iniUnit:
@@ -254,17 +271,17 @@ namespace StarKampf_server
                 return;
             outMsg.Write(OutStrCmd);
             LogMsg("Send msg: " + OutStrCmd);
-            for (int i = 0; i < 4; i++)
+            Console.WriteLine(server.Connections.Count);
+            int i = 0;
+            foreach (var A in server.Connections)
             {
-                try
-                {
-                    if (server.Connections[i] != null)
-                        server.SendMessage(outMsg, server.Connections[i], NetDeliveryMethod.ReliableOrdered);
-                }
-                catch
-                {
-                    //if list of connections < 2 and we try  contact to third connection this will be throw exception 
-                }
+                i++;
+                
+                    if (A != null)
+                        server.SendMessage(outMsg, A, NetDeliveryMethod.ReliableOrdered);
+                    Console.WriteLine("Send " + i);
+                
+                
             }
         }
         public void LogMsg(string message)
