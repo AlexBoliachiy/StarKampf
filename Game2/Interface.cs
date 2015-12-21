@@ -1,5 +1,6 @@
 
-﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using Microsoft.Xna.Framework; using Microsoft.Xna.Framework.Graphics; using Microsoft.Xna.Framework.Input; using System.Diagnostics;   namespace Game2 {     class Interface     {         private Vector2 firstLeftClickCoord; //         private Vector2 currentMousePos;     //         private MouseState mouseState;       // this is all for drawing  selecting rectangle         private KeyboardState keyboardState; //         private bool isClicded;              //         private bool isDrawable;             //         private SpriteBatch sprite;          //         public Texture2D Pixel;              //         public Camera2D camera;              //         public GraphicsDevice graphics;      //         public Map map;          private int screenWight = 1280;         private int screenHeight = 720;           private int side;         private List<BaseUnit> selectedUnits;         private SpriteFont font;         private Texture2D[] allTextures;
+﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using Microsoft.Xna.Framework; using Microsoft.Xna.Framework.Graphics; using Microsoft.Xna.Framework.Input; using System.Diagnostics;   namespace Game2 {     class Interface     {         private Vector2 firstLeftClickCoord; //         private Vector2 currentMousePos;     //         private MouseState mouseState;       // this is all for drawing  selecting rectangle         private KeyboardState keyboardState; //         private bool isClicded;              //         private bool isDrawable;             //         private SpriteBatch sprite;          //         public Texture2D Pixel;              //         public Camera2D camera;              //         public GraphicsDevice graphics;      //         public Map map;          private int screenWight = 1280;         private int screenHeight = 720;
+        private bool Attack;          private int side;         private List<BaseUnit> selectedUnits;         private SpriteFont font;         private Texture2D[] allTextures;
         private Rectangle panel;
         private List<Rectangle> ClickableCreatUnits;
         private List<int> IdOfCreatUnits;
@@ -34,7 +35,55 @@
 
             //Updating for drawing selectedunits on panel
             screenLeftDownX = (int)camera.Pos.X - screenWight / 2;             screenLeftDownY = (int)camera.Pos.Y + screenHeight;             panel = new Rectangle(screenLeftDownX, screenLeftDownY - PanelHeight, screenWight, PanelHeight);                           //TODO вынести в отдельный метод             keyboardState = Keyboard.GetState();             if (mouseState.Position.X < 50 && camera._pos.X > screenWight / 2)    //camera movement             {                                       //camera movement                 camera._pos += new Vector2(-10, 0); //camera movement             }                                       //camera movement             if (mouseState.Position.Y < 50 && camera._pos.Y > screenHeight / 2)    //camera movement             {                                       //camera movement                 camera._pos += new Vector2(0, -10); //camera movement             }                                       //camera movement             if (mouseState.Position.Y > 680 && camera._pos.Y < map.tileHeight * map.height - screenHeight / 2) //camera movement             {                                       //camera movement                 camera._pos += new Vector2(0, +10); //camera movement             }                                       //camera movement             if (mouseState.Position.X > 1230 && camera._pos.X < map.tileWidth * map.width - screenWight / 2)    //camera movement             {                                       //camera movement                 camera._pos += new Vector2(10, 0);  //camera movement             }                                       //camera movement              // I thought thic code is extremely simple                           if (isClicded == false && mouseState.LeftButton == ButtonState.Pressed &&
-               !panel.Contains( Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics))))) // If clicked fisrt time             {                 //Clean list of selecting unit becouse now will select new                 selectedUnits.Clear();                  //Transform pixel coords to window coords                 firstLeftClickCoord = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));                 isClicded = true;             }             else if (isClicded == true && mouseState.LeftButton == ButtonState.Pressed) // if moving mouse while selecting units              {                 currentMousePos = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));                 isDrawable = true;             }             else if (isClicded == true && mouseState.LeftButton == ButtonState.Released) // if have selected yet             {                 isClicded = false;                 isDrawable = false;                 SelectUnits(VecUnits);              }             else if (mouseState.RightButton == ButtonState.Pressed)             {                 if (VecUnits.Count == 0)                     return null;                 currentMousePos = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));                 /* for (int j=0; j < VecUnits.Count; i++)                      {                        Вот тут надо сделать такое.                        1. Метод BaseUnit который возвращает его rect.                        2. Проверку на то, не перекает ли currentMousePos rect каждого юнита в Vecunits                         3 Если есть хоть какой-то юнит, и он вражеский, формируем запрос на атаку, возвращаем строку, и там уже она отошлется                      } */                 // Если никакого юнита там нет, формируем запрос на перемещение                  return PrepareRequestMoveUnit();             }                  return null;         }         private  string PrepareRequestMoveUnit()         {             string commands = String.Empty;              for (int i = 0; i < selectedUnits.Count(); i++)             {                  commands += "1" + " " + selectedUnits[i].GN.ToString() + " " +                            ((int)currentMousePos.X).ToString() + " " + ((int)currentMousePos.Y).ToString() + " " + side.ToString() + "\n";             }             if (commands == string.Empty) return null;             else return commands;         }            public void Draw()         {
+               !panel.Contains( Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics))))) // If clicked fisrt time             {                 //Clean list of selecting unit becouse now will select new                 selectedUnits.Clear();                  //Transform pixel coords to window coords                 firstLeftClickCoord = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));                 isClicded = true;             }             else if (isClicded == true && mouseState.LeftButton == ButtonState.Pressed) // if moving mouse while selecting units              {                 currentMousePos = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));                 isDrawable = true;             }             else if (isClicded == true && mouseState.LeftButton == ButtonState.Released) // if have selected yet             {                 isClicded = false;                 isDrawable = false;                 SelectUnits(VecUnits);              }             else if (mouseState.RightButton == ButtonState.Pressed)             {
+                currentMousePos = Vector2.Transform(mouseState.Position.ToVector2(), Matrix.Invert(camera.GetTransformation(graphics)));
+                List<BaseUnit> fighters = new List<BaseUnit>();
+                foreach (BaseUnit unit in VecUnits)
+                {
+                    if (unit is Fighter)
+                    {
+                        fighters.Add(unit);
+                    }
+                } // це рішення проблеми, з тим щоб вибирати юніти тільки потрібного типу зі списку.
+                foreach (Fighter unit in fighters)
+                {
+                    if (unit.unitBound.Contains(currentMousePos.X, currentMousePos.Y) && selectedUnits.Capacity != 0)
+                    {
+                        List<BaseUnit> tmp = new List<BaseUnit>();
+                        Attack = true;
+                        foreach (BaseUnit fighter in selectedUnits)
+                        {
+                            if (fighter is Fighter)
+                            {
+                                tmp.Add(fighter);
+                            }
+                        }
+                        foreach (Fighter fighter in tmp)
+                        {
+                            if (fighter != unit)
+                            {
+                                fighter.setTarget(unit);
+                            }
+                        }
+
+                    }
+                }
+                if (!Attack)
+                {
+                    if (VecUnits.Count == 0)
+                        return null;
+
+                    /* for (int j=0; j < VecUnits.Count; i++)                          {                            Вот тут надо сделать такое.                            1. Метод BaseUnit который возвращает его rect.                            2. Проверку на то, не перекает ли currentMousePos rect каждого юнита в Vecunits                             3 Если есть хоть какой-то юнит, и он вражеский, формируем запрос на атаку, возвращаем строку, и там уже она отошлется                          } */
+                    // Если никакого юнита там нет, формируем запрос на перемещение
+                    foreach (Fighter unit in fighters)
+                    {
+                        unit.isAttacking = false;
+                    }
+                    return PrepareRequestMoveUnit();
+                }
+                Attack = false;
+            }
+            return null;         }         private  string PrepareRequestMoveUnit()         {             string commands = String.Empty;              for (int i = 0; i < selectedUnits.Count(); i++)             {                  commands += "1" + " " + selectedUnits[i].GN.ToString() + " " +                            ((int)currentMousePos.X).ToString() + " " + ((int)currentMousePos.Y).ToString() + " " + side.ToString() + "\n";             }             if (commands == string.Empty) return null;             else return commands;         }            public void Draw()         {
            sprite.Begin(SpriteSortMode.Deferred ,
            BlendState.AlphaBlend,
            null,

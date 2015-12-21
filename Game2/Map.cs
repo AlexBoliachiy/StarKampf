@@ -19,8 +19,8 @@ namespace Game2
 
         public int this[int i, int j] { get { return map[i, j]; } }
 
-        public int tileWidth = 64;
-        public int tileHeight = 64;
+        public int tileWidth = 128;
+        public int tileHeight = 128;
         private SpriteBatch sprite;
 
 
