@@ -19,8 +19,6 @@ namespace Game2
         public bool IsMoving { get { return isMoving; } }
         protected bool isRotating;
         public bool IsRotating { get { return isRotating; } }
-        private Rectangle unitBound; // unit bounding box, used for detecting collision
-        private int textureWight = 70, textureHeight = 50;
         private List<Point> pointList;
         private int wayPoint;
         protected MovingUnit() // Prevent ini any objects this class
@@ -32,7 +30,6 @@ namespace Game2
 
         protected bool isCollides() // поиск колизий
         {
-            unitBound = new Rectangle((int)this.X - textureWight / 2, (int)this.Y - textureHeight / 2, textureWight, textureHeight);
             for (int i = 0; i < map.width; i++)
             {
                 for (int j = 0; j < map.height; j++)
@@ -205,7 +202,7 @@ namespace Game2
             return result1;
         }
 
-        bool lineOfSight(int x1, int y1, int x2, int y2) // cheks if we see the target (we cant see through walls)
+        protected bool lineOfSight(int x1, int y1, int x2, int y2) // cheks if we see the target (we cant see through walls)
         {
             int dx = x2 - x1;
             int dy = y2 - y1;

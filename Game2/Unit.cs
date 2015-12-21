@@ -15,7 +15,7 @@ namespace Game2
     {
         protected static Map map;
         protected static ConnectionManager conMan;
-
+        private int textureWight = 70, textureHeight = 50;
         protected int health;
         public int MaxHealth { get { return _MaxHealth; } }
         protected int _MaxHealth;
@@ -32,6 +32,11 @@ namespace Game2
         protected float angle; // Угол в радианах
         protected float rotateAngle; // Угол поворота в радианах
         public float Angle { get { return angle; } }
+
+        public Rectangle unitBound
+        {
+            get { return new Rectangle((int)this.X - textureWight / 2, (int)this.Y - textureHeight / 2, textureWight, textureHeight); }
+        }
 
        public static void InitializeMap(Map _map, ConnectionManager _conMan)
         {
