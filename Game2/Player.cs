@@ -17,7 +17,7 @@ namespace Game2
         iniUnit = 0,
         moveUnit = 1,
         iniSide = 228,
-
+        attack = 2
     }
 
     enum Units
@@ -81,7 +81,7 @@ namespace Game2
         {
           
             
-            conMan.Initialize(VecUnits, map);
+            conMan.Initialize(ref VecUnits, map);
             BaseUnit.InitializeMap(map, conMan);
             Building.Initialize(ref VecUnits);
 
@@ -95,13 +95,21 @@ namespace Game2
             sw.Start();
             conMan.Update(Inter.Update(VecUnits));
 
-            int x = GraphicsDevice.Viewport.X;
-           
-           
+
+            List<BaseUnit> Removable = new List<BaseUnit>();
 
             foreach (BaseUnit Unit in VecUnits)
             {
+                if (Unit.Health <= 0)
+                {
+                    Removable.Add(Unit);
+                }
                 Unit.Act(interval);
+            }
+
+            foreach (BaseUnit Unit in Removable)
+            {
+                VecUnits.Remove(Unit);
             }
         }
 

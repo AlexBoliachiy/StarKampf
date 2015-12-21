@@ -35,7 +35,7 @@ namespace Game2
         private double Countdown;
         public bool isAttacking;
         private Stopwatch sw;
-        private Fighter target;
+        private BaseUnit target;
         public override string GetUnitProperties
         {
             get
@@ -50,7 +50,7 @@ namespace Game2
             if (isAttacking) Attack();
         }
 
-        public void setTarget(Fighter target)
+        public void setTarget(BaseUnit target)
         {
             this.target = target;
             isAttacking = true;
@@ -58,11 +58,11 @@ namespace Game2
 
         public string Attack()
         {
-            if (lineOfSight((int)x / 256, (int)y / 256, (int)target.x / 256, (int)target.y / 256) && radius > Math.Sqrt(Math.Pow((int)target.x - x, 2) + Math.Pow((int)target.y - y, 2))) // проверяем 
+            if (lineOfSight((int)x / 256, (int)y / 256, (int)target.X / 256, (int)target.Y / 256) && radius > Math.Sqrt(Math.Pow((int)target.X - x, 2) + Math.Pow((int)target.Y - y, 2))) // проверяем 
             {// видим ли мы противника
                 isMoving = false;
-                Dx = (int)target.x - x;
-                Dy = (int)target.y - y;
+                Dx = (int)target.X - x;
+                Dy = (int)target.Y - y;
                 if ((float)Math.Atan2(Dy, Dx) - angle != 0)
                 {
                     rotateAngle = (float)Math.Atan2(Dy, Dx) - angle;
@@ -74,10 +74,9 @@ namespace Game2
                 {
                     if (sw.Elapsed.TotalSeconds > Countdown || sw.ElapsedMilliseconds == 0)
                     {
-                        sw.Stop();
+                        
                         target.health -= damage;
-                        sw.Start();
-                        isAttacking = false;
+                        sw.Restart();
                     }
                 }
             }
@@ -85,7 +84,7 @@ namespace Game2
             {
                 if (isMoving == false)
                 {
-                    SetMoveDest((int)target.x, (int)target.y);
+                    SetMoveDest((int)target.X, (int)target.Y);
                 }
             }
             return null;

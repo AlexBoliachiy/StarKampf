@@ -14,7 +14,8 @@ namespace StarKampf_server
     {
         iniUnit = 0,
         moveUnit = 1,
-        iniSide = 228
+        iniSide = 228,
+        attack = 2
     }
 
     enum Units
@@ -135,6 +136,10 @@ namespace StarKampf_server
                             server.SendMessage(outMsg, server.Connections.Last(), NetDeliveryMethod.ReliableOrdered);
                             side++;
                             break;
+                        case Commands.attack:
+                            OutStrCmd += "2 " + ArrOfCms[1].ToString() + " " +  ArrOfCms[2].ToString() +  " "+'\n';
+                            break;
+
                         default:
                             break;
                     }

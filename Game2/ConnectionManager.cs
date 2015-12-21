@@ -24,17 +24,18 @@ namespace Game2
         private bool ShoudSend;
         string OutComingCommandAboutIni;
         int side;
-
+        List<BaseUnit> VecUnits;
         private bool DG;
 
-        public int Initialize(List<BaseUnit> VecUnits, Map map)
+        public int Initialize(ref List<BaseUnit> VecUnits, Map map)
         {
             config = new NetPeerConfiguration("StarKampf");
             client = new NetClient(config);
             client.Start();
             client.Connect(host: "127.0.0.1", port: 12345);
             outMsg = client.CreateMessage();
-            unitsManager = new UnitsManager(VecUnits, map);
+            this.VecUnits = VecUnits;
+            unitsManager = new UnitsManager(ref VecUnits, map);
             OutComingCommandAboutIni = string.Empty;
             return side;
         }
@@ -84,7 +85,12 @@ namespace Game2
                 outMsg.Write(OutComingCommandAboutIni);
                 ShoudSend = false;
                 OutComingCommandAboutIni = String.Empty;
-                client.SendMessage(outMsg, NetDeliveryMethod.ReliableUnordered);
+
+                try
+                {
+                    client.SendMessage(outMsg, NetDeliveryMethod.ReliableUnordered);
+                }
+                catch { }
 
             }
         }
@@ -164,7 +170,9 @@ namespace Game2
                         side = IntCommands[i][1];
                         LogMsg("THIS SIDE +@" + side.ToString() + "@\n");
                         break;
-
+                    case Commands.attack:
+                        unitsManager.HandleAttackMsg(IntCommands[i]);
+                        break;
                     default:
                         break;
                 }
@@ -175,7 +183,7 @@ namespace Game2
         {
              File.AppendAllText("log.txt", message);
         }
-
+        
 
 
     }

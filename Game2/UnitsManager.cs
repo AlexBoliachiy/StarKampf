@@ -15,7 +15,7 @@ namespace Game2
         
         private List<BaseUnit> VecUnits;
 
-        public UnitsManager(List<BaseUnit> _VecUnits, Map map)
+        public UnitsManager(ref List<BaseUnit> _VecUnits, Map map)
         {
             VecUnits = _VecUnits;
             VecUnits.Capacity = 128;
@@ -130,6 +130,12 @@ namespace Game2
             }
             return null;
 
+        }
+
+        public void HandleAttackMsg(int[] IntCommands)
+        {
+            Fighter f = FindInList(VecUnits, IntCommands[1]) as Fighter;
+            f.setTarget(FindInList(VecUnits, IntCommands[2]));
         }
     }
 }

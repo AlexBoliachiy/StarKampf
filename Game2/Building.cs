@@ -37,6 +37,7 @@ namespace Game2
             this.ID = ID;
             this.IN = IN;
             this._MaxHealth = MaxHealth;
+            this.health = MaxHealth;
             this.x = x;
             this.y = y;
             this.FlagX = (int)X - 100;

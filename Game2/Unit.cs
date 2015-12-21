@@ -16,7 +16,7 @@ namespace Game2
         protected static Map map;
         protected static ConnectionManager conMan;
         private int textureWight = 70, textureHeight = 50;
-        protected int health;
+        public int health;
         public int MaxHealth { get { return _MaxHealth; } }
         protected int _MaxHealth;
         protected double x, y;
