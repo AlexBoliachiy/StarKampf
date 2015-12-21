@@ -57,6 +57,7 @@ namespace Game2
         private Stopwatch sw;
         private string UnitSItuation = string.Empty; // Тут собираются все взаимодействия между юнитами, картой , потом это отправляется серверу
 
+        Texture2D[] mapTextures;
         private List<BaseUnit> VecUnits;
 
         public Player(GraphicsDevice GraphicsDevice, SpriteFont font)
@@ -65,7 +66,7 @@ namespace Game2
             conMan = new ConnectionManager();
             VecUnits = new List<BaseUnit>();
             sprite = new SpriteBatch(GraphicsDevice);
-            map = new Map();
+            map = new Map(sprite);
 
             Inter = new Interface(GraphicsDevice, 0, map, font, allTextures );
             sw = new Stopwatch();
@@ -103,9 +104,9 @@ namespace Game2
         {
 
             Inter.DrawHealthUnderAllUnit(VecUnits, allTextures);
-            
- 
-            DrawMap(); // Should be map.Draw(); // Otherside, it's not so important. 
+
+
+            map.DrawMap(mapTextures, Inter);
             DrawUnits();
             Inter.Draw();
         }
@@ -136,34 +137,12 @@ namespace Game2
             return 0;
         }
 
-        private int DrawMap()
-        {
-            sprite.Begin(SpriteSortMode.BackToFront,
-                                   BlendState.AlphaBlend,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   Inter.camera.GetTransformation(GraphicsDevice));
-            for (int i = 0; i < map.width; i++)
-            {
-                for (int j = 0; j < map.height; j++)
-                {
-                    if (map[i, j] == 1) // Вынести все это дерьмо в метод карты. То есть должно быть map.draw();
-                    {
-                        Rectangle tmp = new Rectangle(i * map.tileWidth, j * map.tileHeight, map.tileWidth, map.tileHeight);
-                        sprite.Draw(wallTexture, tmp, Color.White);
-                    }
-                }
-            }
-            sprite.End();
-            return 0;
-        }
+       
 
-        public void IniTextures(Texture2D[] texture, Texture2D wallTexture)
+        public void IniTextures(Texture2D[] texture, Texture2D[] mapTextures)
         {
             allTextures = texture;
-            this.wallTexture = wallTexture;
+            this.mapTextures = mapTextures;
         }
 
        

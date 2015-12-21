@@ -53,13 +53,18 @@ namespace Game2
 
             for (int i = 0; i < PathToTextures.Length; i++)
             {
-                
-                allTextures[int.Parse(PathToTextures[i].Split(' ')[1])] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i].Split(' ')[0]);
 
+                allTextures[int.Parse(PathToTextures[i].Split(' ')[1])] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i].Split(' ')[0]);
             }
-            
-            Texture2D wallTexture = Content.Load<Texture2D>("Textures\\wall.png");
-            player.IniTextures(allTextures, wallTexture);
+
+            PathToTextures = System.IO.File.ReadAllLines("Content\\Textures\\walls.txt");
+            Texture2D[] mapTextures = new Texture2D[PathToTextures.Length];
+            for (int i = 0; i < PathToTextures.Length; i += 1)
+            {
+                mapTextures[i] = Content.Load<Texture2D>("Textures\\" + PathToTextures[i]);
+            }
+
+            player.IniTextures(allTextures, mapTextures);
             player.Inter.Initialize(allTextures);
             // TODO: use this.Content to load your game content here
         }
